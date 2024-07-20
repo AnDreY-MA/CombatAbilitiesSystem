@@ -4,7 +4,7 @@
 	"VersionName": "1.0",
 	"FriendlyName": "CombatAbilitiesSystem",
 	"Description": "",
-	"Category": "Game Features",
+	"Category": "Combat Abilities",
 	"CreatedBy": "",
 	"CreatedByURL": "",
 	"DocsURL": "",
@@ -23,5 +23,11 @@
 		}
 	],
 	"ExplicitlyLoaded": true,
-	"BuiltInInitialFeatureState": "Active"
+	"BuiltInInitialFeatureState": "Active",
+	"Plugins": [
+		{
+			"Name": "MotionWarping",
+			"Enabled": true
+		}
+	]
 }

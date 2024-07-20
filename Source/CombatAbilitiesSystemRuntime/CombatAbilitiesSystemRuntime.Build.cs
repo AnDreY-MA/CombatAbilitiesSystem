@@ -26,6 +26,7 @@ public class CombatAbilitiesSystemRuntime : ModuleRules
 			new string[]
 			{
 				"Core",
+				"MotionWarping"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

@@ -7,6 +7,7 @@
 #include "CombatAbilitiesSystemRuntimeModule.h"
 #include "Components/GameFrameworkComponentManager.h"
 #include "GameFeaturesSubsystemSettings.h"
+#include "Components/CombatSystemComponent.h"
 #include "Engine/AssetManager.h"
 #include "Input/AbilityInputBindingComponent.h"
 
@@ -35,32 +36,31 @@ void UAddAbilities_GameFeatureAction::OnGameFeatureDeactivating(FGameFeatureDeac
 #if WITH_EDITORONLY_DATA
 void UAddAbilities_GameFeatureAction::AddAdditionalAssetBundleData(FAssetBundleData& AssetBundleData)
 {
-	if (UAssetManager::IsValid())
+	if (!UAssetManager::IsValid()) return;
+	
+	auto AddBundleAsset = [&AssetBundleData](const FSoftObjectPath& SoftObjectPath)
 	{
-		auto AddBundleAsset = [&AssetBundleData](const FSoftObjectPath& SoftObjectPath)
-		{
-			AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateClient, SoftObjectPath);
-			AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateServer, SoftObjectPath);
-		};
+		AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateClient, SoftObjectPath);
+		AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateServer, SoftObjectPath);
+	};
 
-		for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
+	for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
+	{
+		for (const FCombatAbilityMapping& Ability : Entry.GrantedAbilities)
 		{
-			for (const FCombatAbilityMapping& Ability : Entry.GrantedAbilities)
+			AddBundleAsset(Ability.Ability.ToSoftObjectPath());
+			if (!Ability.InputAction.IsNull())
 			{
-				AddBundleAsset(Ability.Ability.ToSoftObjectPath());
-				if (!Ability.InputAction.IsNull())
-				{
-					AddBundleAsset(Ability.InputAction.ToSoftObjectPath());
-				}
+				AddBundleAsset(Ability.InputAction.ToSoftObjectPath());
 			}
+		}
 
-			for (const FCombatAttributesMapping& Attributes : Entry.GrantedAttributes)
+		for (const FCombatAttributesMapping& Attributes : Entry.GrantedAttributes)
+		{
+			AddBundleAsset(Attributes.Attribute.ToSoftObjectPath());
+			if (!Attributes.AttributeData.IsNull())
 			{
-				AddBundleAsset(Attributes.Attribute.ToSoftObjectPath());
-				if (!Attributes.AttributeData.IsNull())
-				{
-					AddBundleAsset(Attributes.AttributeData.ToSoftObjectPath());
-				}
+				AddBundleAsset(Attributes.AttributeData.ToSoftObjectPath());
 			}
 		}
 	}
@@ -72,7 +72,7 @@ EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>
 {
 	EDataValidationResult Result = CombineDataValidationResults(Super::IsDataValid(ValidationErrors), EDataValidationResult::Valid);
 
-	int32 EntryIndex = 0;
+	int32 EntryIndex {0};
 	for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
 	{
 		if (Entry.ActorClass.IsNull())
@@ -87,7 +87,7 @@ EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>
 			ValidationErrors.Add(FText::Format(LOCTEXT("EntryHasNoAddOns", "Empty GrantedAbilities and GrantedAttributes at index {0} in AbilitiesList"), FText::AsNumber(EntryIndex)));
 		}
 
-		int32 AbilityIndex = 0;
+		int32 AbilityIndex {0};
 		for (const FCombatAbilityMapping& Ability : Entry.GrantedAbilities)
 		{
 			if (Ability.Ability.IsNull())
@@ -98,7 +98,7 @@ EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>
 			++AbilityIndex;
 		}
 
-		int32 AttributesIndex = 0;
+		int32 AttributesIndex {0};
 		for (const FCombatAttributesMapping& Attributes : Entry.GrantedAttributes)
 		{
 			if (Attributes.Attribute.IsNull())
@@ -121,21 +121,21 @@ EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>
 void UAddAbilities_GameFeatureAction::AddToWorld(const FWorldContext& WorldContext)
 {
 	UE_LOG(LogCombatAbilitySystem, Warning, TEXT("ADD TO WORLD ABILITY"));
-	UWorld* World = WorldContext.World();
-	UGameInstance* GameInstance = WorldContext.OwningGameInstance;
+	const UWorld* World {WorldContext.World()};
+	const UGameInstance* GameInstance {WorldContext.OwningGameInstance};
 
 	if ((GameInstance != nullptr) && (World != nullptr) && World->IsGameWorld())
 	{
-		if (UGameFrameworkComponentManager* ComponentMan = UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance))
+		if (UGameFrameworkComponentManager* ComponentMan {UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance)})
 		{			
-			int32 EntryIndex = 0;
+			int32 EntryIndex {0};
 			for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
 			{
 				if (!Entry.ActorClass.IsNull())
 				{
-					UGameFrameworkComponentManager::FExtensionHandlerDelegate AddAbilitiesDelegate = UGameFrameworkComponentManager::FExtensionHandlerDelegate::CreateUObject(
-						this, &UAddAbilities_GameFeatureAction::HandleActorExtension, EntryIndex);
-					TSharedPtr<FComponentRequestHandle> ExtensionRequestHandle = ComponentMan->AddExtensionHandler(Entry.ActorClass, AddAbilitiesDelegate);
+					UGameFrameworkComponentManager::FExtensionHandlerDelegate AddAbilitiesDelegate {UGameFrameworkComponentManager::FExtensionHandlerDelegate::CreateUObject(
+						this, &UAddAbilities_GameFeatureAction::HandleActorExtension, EntryIndex)};
+					TSharedPtr<FComponentRequestHandle> ExtensionRequestHandle {ComponentMan->AddExtensionHandler(Entry.ActorClass, AddAbilitiesDelegate)};
 
 					ComponentRequests.Add(ExtensionRequestHandle);
 					EntryIndex++;
@@ -149,7 +149,7 @@ void UAddAbilities_GameFeatureAction::Reset()
 {
 	while (!ActiveExtensions.IsEmpty())
 	{
-		auto ExtensionIt = ActiveExtensions.CreateIterator();
+		const auto ExtensionIt = ActiveExtensions.CreateIterator();
 		RemoveActorAbilities(ExtensionIt->Key);
 	}
 
@@ -174,66 +174,61 @@ void UAddAbilities_GameFeatureAction::HandleActorExtension(AActor* Actor, FName 
 
 void UAddAbilities_GameFeatureAction::AddActorAbilities(AActor* Actor, const FGameFeatureAbilitiesEntry& AbilitiesEntry)
 {
-	UE_LOG(LogCombatAbilitySystem, Error, TEXT("Added ability"), *Actor->GetPathName());
-	if (UAbilitySystemComponent* AbilitySystemComponent = FindOrAddComponentForActor<UAbilitySystemComponent>(Actor, AbilitiesEntry))
-	{
-		FActorExtensions AddedExtensions;
-		AddedExtensions.Abilities.Reserve(AbilitiesEntry.GrantedAbilities.Num());
-		AddedExtensions.Attributes.Reserve(AbilitiesEntry.GrantedAttributes.Num());
-
-		for (const FCombatAbilityMapping& Ability : AbilitiesEntry.GrantedAbilities)
-		{
-			if (!Ability.Ability.IsNull())
-			{
-				FGameplayAbilitySpec NewAbilitySpec(Ability.Ability.LoadSynchronous());
-				FGameplayAbilitySpecHandle AbilityHandle = AbilitySystemComponent->GiveAbility(NewAbilitySpec);
-
-				if (!Ability.InputAction.IsNull())
-				{
-					UAbilityInputBindingComponent* InputComponent = FindOrAddComponentForActor<UAbilityInputBindingComponent>(Actor, AbilitiesEntry);
-					if (InputComponent)
-					{
-						InputComponent->SetInputBinding(Ability.InputAction.LoadSynchronous(), AbilityHandle);
-					}
-					else
-					{
-						 UE_LOG(LogCombatAbilitySystem, Error, TEXT("Failed to find/add an ability input binding component to '%s' -- are you sure it's a pawn class?"), *Actor->GetPathName());
-					}
-				}
-
-				AddedExtensions.Abilities.Add(AbilityHandle);
-			}
-		}
-
-		for (const FCombatAttributesMapping& Attributes : AbilitiesEntry.GrantedAttributes)
-		{
-			if (!Attributes.Attribute.IsNull())
-			{
-				TSubclassOf<UAttributeSet> SetType = Attributes.Attribute.LoadSynchronous();
-				if (SetType)
-				{
-					UAttributeSet* NewSet = NewObject<UAttributeSet>(AbilitySystemComponent, SetType);
-					if (!Attributes.AttributeData.IsNull())
-					{
-						UDataTable* InitData = Attributes.AttributeData.LoadSynchronous();
-						if (InitData)
-						{
-							NewSet->InitFromMetaDataTable(InitData);
-						}
-					}
-
-					AddedExtensions.Attributes.Add(NewSet);
-					AbilitySystemComponent->AddAttributeSetSubobject(NewSet);
-				}
-			}
-		}
-
-		ActiveExtensions.Add(Actor, AddedExtensions);
-	}
-	else
+	auto* CombatAbilitySystemComponent = FindOrAddComponentForActor<UCombatSystemComponent>(Actor, AbilitiesEntry);
+	if(!CombatAbilitySystemComponent)
 	{
 		UE_LOG(LogCombatAbilitySystem, Error, TEXT("Failed to find/add an ability component to '%s'. Abilities will not be granted."), *Actor->GetPathName());
+		return;
 	}
+
+	FActorExtensions AddedExtensions;
+	AddedExtensions.Abilities.Reserve(AbilitiesEntry.GrantedAbilities.Num());
+	AddedExtensions.Attributes.Reserve(AbilitiesEntry.GrantedAttributes.Num());
+
+	for (const FCombatAbilityMapping& Ability : AbilitiesEntry.GrantedAbilities)
+	{
+		if (Ability.Ability.IsNull()) continue;
+
+		FGameplayAbilitySpec NewAbilitySpec(Ability.Ability.LoadSynchronous());
+		FGameplayAbilitySpecHandle AbilityHandle = CombatAbilitySystemComponent->GiveAbility(NewAbilitySpec);
+
+		if (!Ability.InputAction.IsNull())
+		{
+			if (auto* InputComponent = FindOrAddComponentForActor<UAbilityInputBindingComponent>(Actor, AbilitiesEntry); InputComponent)
+			{
+				InputComponent->SetInputBinding(Ability.InputAction.LoadSynchronous(), AbilityHandle);
+			}
+			else
+			{
+				UE_LOG(LogCombatAbilitySystem, Error, TEXT("Failed to find/add an ability input binding component to '%s' -- are you sure it's a pawn class?"), *Actor->GetPathName());
+			}
+		}
+
+		AddedExtensions.Abilities.Add(AbilityHandle);
+	}
+
+	for (const FCombatAttributesMapping& Attributes : AbilitiesEntry.GrantedAttributes)
+	{
+		if (Attributes.Attribute.IsNull()) continue;
+
+		if (TSubclassOf<UAttributeSet> SetType = Attributes.Attribute.LoadSynchronous(); SetType)
+		{
+			UAttributeSet* NewSet = NewObject<UAttributeSet>(CombatAbilitySystemComponent, SetType);
+			if (!Attributes.AttributeData.IsNull())
+			{
+				if (UDataTable* InitData = Attributes.AttributeData.LoadSynchronous(); InitData)
+				{
+					NewSet->InitFromMetaDataTable(InitData);
+				}
+			}
+
+			AddedExtensions.Attributes.Add(NewSet);
+			CombatAbilitySystemComponent->AddAttributeSetSubobject(NewSet);
+		}
+	}
+
+	ActiveExtensions.Add(Actor, AddedExtensions);
+	
 }
 
 UActorComponent* UAddAbilities_GameFeatureAction::FindOrAddComponentForActor(UClass* InComponentType,
@@ -257,8 +252,8 @@ UActorComponent* UAddAbilities_GameFeatureAction::FindOrAddComponentForActor(UCl
 
 	if (bMakeComponentRequest)
 	{
-		UWorld* World = InActor->GetWorld();
-		UGameInstance* GameInstance = World->GetGameInstance();
+		const UWorld* World = InActor->GetWorld();
+		const UGameInstance* GameInstance = World->GetGameInstance();
 
 		if (UGameFrameworkComponentManager* ComponentMan = UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance))
 		{
@@ -278,28 +273,29 @@ UActorComponent* UAddAbilities_GameFeatureAction::FindOrAddComponentForActor(UCl
 
 void UAddAbilities_GameFeatureAction::RemoveActorAbilities(AActor* Actor)
 {
-	if (FActorExtensions* ActorExtensions = ActiveExtensions.Find(Actor))
-	{
-		if (UAbilitySystemComponent* AbilitySystemComponent = Actor->FindComponentByClass<UAbilitySystemComponent>())
-		{
-			for (UAttributeSet* AttribSetInstance : ActorExtensions->Attributes)
-			{
-				AbilitySystemComponent->GetSpawnedAttributes_Mutable().Remove(AttribSetInstance);
-			}
+	FActorExtensions* ActorExtensions = ActiveExtensions.Find(Actor);
+	if(!ActorExtensions) return;
 
-			UAbilityInputBindingComponent* InputComponent = Actor->FindComponentByClass<UAbilityInputBindingComponent>();
-			for (FGameplayAbilitySpecHandle AbilityHandle : ActorExtensions->Abilities)
-			{
-				if (InputComponent)
-				{
-					InputComponent->ClearInputBinding(AbilityHandle);
-				}
-				AbilitySystemComponent->SetRemoveAbilityOnEnd(AbilityHandle);
-			}
+	if (auto* CombatAbilitySystemComponent = Actor->FindComponentByClass<UCombatSystemComponent>())
+	{
+		for (UAttributeSet* AttribSetInstance : ActorExtensions->Attributes)
+		{
+			CombatAbilitySystemComponent->GetSpawnedAttributes_Mutable().Remove(AttribSetInstance);
 		}
 
-		ActiveExtensions.Remove(Actor);
+		auto* InputComponent = Actor->FindComponentByClass<UAbilityInputBindingComponent>();
+		for (FGameplayAbilitySpecHandle AbilityHandle : ActorExtensions->Abilities)
+		{
+			if (InputComponent)
+			{
+				InputComponent->ClearInputBinding(AbilityHandle);
+			}
+			CombatAbilitySystemComponent->SetRemoveAbilityOnEnd(AbilityHandle);
+		}
 	}
+
+	ActiveExtensions.Remove(Actor);
+	
 }
 
 

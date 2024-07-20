@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class COMBATABILITIESSYSTEMRUNTIME_API UCombatAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
@@ -26,4 +26,5 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	FGameplayTagBlueprintPropertyMap GameplayTagPropertyMap;
+
 };
