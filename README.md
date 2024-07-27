@@ -1,2 +1,11 @@
-[UE5](https://www.unrealengine.com/en-US/unreal-engine-5)
-#Combat Abilities System
+# Combat Abilities System
+
+## About
+
+The Gameplay Abilities System is a plugin that extends another UE plugin Gameplay Abilities System.
+
+## Features
+
+- Combat Mechanics
+- Enhanced Input integration
+- Game Features Integrations
