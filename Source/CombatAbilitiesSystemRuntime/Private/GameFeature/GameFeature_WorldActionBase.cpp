@@ -23,7 +23,7 @@ void UGameFeature_WorldActionBase::OnGameFeatureDeactivating(FGameFeatureDeactiv
 
 void UGameFeature_WorldActionBase::HandleGameInstanceStart(UGameInstance* GameInstance)
 {
-	if (FWorldContext* WorldContext = GameInstance->GetWorldContext())
+	if (const FWorldContext* WorldContext {GameInstance->GetWorldContext()})
 	{
 		AddToWorld(*WorldContext);
 	}

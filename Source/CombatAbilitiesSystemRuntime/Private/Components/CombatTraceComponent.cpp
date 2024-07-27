@@ -10,14 +10,14 @@
 DECLARE_CYCLE_STAT(TEXT("DoTrace"), STAT_DoTraceTest, STATGROUP_CombatTraceComponent);
 DECLARE_CYCLE_STAT(TEXT("RunStartTrace"), STAT_RunStartTrace, STATGROUP_CombatTraceComponent);
 
-UCombatTraceComponent::UCombatTraceComponent()
+UCombatTraceComponent::UCombatTraceComponent(const FObjectInitializer& InInitializer)
+	: Super(InInitializer), CapsuleRadius(20), CapsuleHalfHeight(40)
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
 }
 
 void UCombatTraceComponent::BeginPlay()
-{
+{	
 	Super::BeginPlay();
 	
 	TraceDelegate.BindUObject(this, &UCombatTraceComponent::OnTraceDelegate);
@@ -44,19 +44,6 @@ void UCombatTraceComponent::DeactivateTrace()
 	
 }
 
-void UCombatTraceComponent::DoAsyncLineTraceFromLocation(const FVector& InStart, const FVector& InEnd) const
-{
-	if (bShouldDebug)
-	{
-		//DrawCapsuleSweeps(GetWorld(), Start, End, 20, 40, Rot, {}, LifeTimeDebugLine);
-		DrawDebugLine(GetWorld(), InStart, InEnd, ColorDebug, false, LifeTimeDebugLine);
-
-	}
-	FCollisionQueryParams CollisionQueryParams;
-	CollisionQueryParams.AddIgnoredActor(GetOwner());
-	GetWorld()->AsyncLineTraceByChannel(EAsyncTraceType::Single, InStart, InEnd, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
-}
-
 void UCombatTraceComponent::ChangeTracingComponent(USceneComponent* InSceneComponent)
 {
 	TracingComponent = InSceneComponent;
@@ -66,27 +53,30 @@ void UCombatTraceComponent::DoTrace() const
 {
 	SCOPE_CYCLE_COUNTER(STAT_DoTraceTest);
 
+	auto* World {GetWorld()};
 	const FVector Start{TracingComponent->GetSocketLocation(NameSocketStart)};
 	const FVector End{TracingComponent->GetSocketLocation(NameSocketEnd)};
-	FQuat Rot = TracingComponent->GetSocketQuaternion(NameSocketStart);
+	const FQuat Rot = TracingComponent->GetSocketQuaternion(NameSocketStart);
 
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
 
-	DoAsyncLineTraceFromLocation(Start, End);
+#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
+	TryDrawDebug(Start, End, Rot);
+#endif
 	
-	/*#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
-
-	if (bShouldDebug)
+	if(TraceStyleType == ECombatCollisionStyleType::Line)
 	{
-		//DrawCapsuleSweeps(GetWorld(), Start, End, 20, 40, Rot, {}, LifeTimeDebugLine);
-		DrawDebugLine(GetWorld(), Start, End, ColorDebug, false, LifeTimeDebugLine);
-
+		World->AsyncLineTraceByChannel(EAsyncTraceType::Single, Start, End, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
 	}
-	#endif
-	//GetWorld()->AsyncSweepByChannel(EAsyncTraceType::Single, Start, End, Rot, TraceChannel, FCollisionShape::MakeCapsule(20, 40), CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
-	GetWorld()->AsyncLineTraceByChannel(EAsyncTraceType::Single, Start, End, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
-	*/
+	else
+	{
+		if(ShapeType == ECombatCollisionShapeType::Capsule)
+		{
+			GetWorld()->AsyncSweepByChannel(EAsyncTraceType::Single, Start, End, Rot, TraceChannel, FCollisionShape::MakeCapsule(20, 40), CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
+		}
+	}
+	
 }
 
 void UCombatTraceComponent::OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum)
@@ -97,8 +87,30 @@ void UCombatTraceComponent::OnTraceDelegate(const FTraceHandle& InTraceHandle, F
 		Payload.Instigator = GetOwner();
 		Payload.Target = InTraceDatum.OutHits[0].GetActor();
 		Payload.TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(InTraceDatum.OutHits[0].GetActor());
-		UE_LOG(LogTemp, Warning, TEXT("Owner = %s"), *GetOwner()->GetName());
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwner(), EventHitTag, Payload);
 		UE_LOG(LogCombatAbilitySystem, Display, TEXT("Hit Actor %s"), *InTraceDatum.OutHits[0].GetActor()->GetName());
 	}
 }
+
+#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
+void UCombatTraceComponent::TryDrawDebug(const FVector& InStart, const FVector& InEnd, const FQuat& InRot) const
+{
+	if (!bShouldDebug) return;
+
+	if(TraceStyleType == ECombatCollisionStyleType::Line)
+	{
+		DrawDebugLine(GetWorld(), InStart, InEnd, ColorDebug, false, LifeTimeDebugLine);
+	}
+	else if(TraceStyleType == ECombatCollisionStyleType::Sweep)
+	{
+		if(ShapeType == ECombatCollisionShapeType::Capsule)
+		{
+			DrawCapsuleSweeps(GetWorld(), InStart, InEnd, 20, 40, InRot, {}, LifeTimeDebugLine);
+		}
+		else if(ShapeType == ECombatCollisionShapeType::Sphere)
+		{
+			DrawSphereSweeps(GetWorld(), InStart, InEnd, 30, {}, LifeTimeDebugLine);
+		}
+	}
+}
+# endif

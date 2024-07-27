@@ -30,13 +30,10 @@ class COMBATABILITIESSYSTEMRUNTIME_API UCombatTraceComponent : public UActorComp
 	GENERATED_BODY()
 
 public:	
-	UCombatTraceComponent();
+	explicit UCombatTraceComponent(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
 	void ActivateTrace();
 	void DeactivateTrace();
-
-	UFUNCTION(BlueprintCallable)
-	void DoAsyncLineTraceFromLocation(const FVector& InStart, const FVector& InEnd) const;
 
 	UFUNCTION(BlueprintCallable, Category="TraceComponent")
 	void ChangeTracingComponent(USceneComponent* InSceneComponent);
@@ -60,11 +57,19 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Trace")
 	ECombatCollisionStyleType TraceStyleType{ECombatCollisionStyleType::Line};
 
-	UPROPERTY(EditDefaultsOnly, Category="Trace", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep", EditConditionHides))
 	ECombatCollisionShapeType ShapeType{ECombatCollisionShapeType::Capsule};
 
+	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	float CapsuleRadius;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	float CapsuleHalfHeight;
+	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Event")
 	FGameplayTag EventHitTag{FGameplayTag()};
+
+#pragma region Debug
 
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(DevelopmentOnly))
 	bool bShouldLog{true};
@@ -77,6 +82,7 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(EditCondition="bShouldDebug", EditConditionHides, DevelopmentOnly))
 	FColor ColorDebug{FColor::Red};
+#pragma endregion 
 	
 	UPROPERTY()
 	TWeakObjectPtr<USceneComponent> TracingComponent;
@@ -90,4 +96,8 @@ private:
 	void DoTrace() const;
 	void OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum);
 
+#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
+	void TryDrawDebug(const FVector& InStart, const FVector& InEnd, const FQuat& InRot) const;
+#endif
+	
 };

@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFeature/GameFeature_WorldActionBase.h"
-#include "AddInputContextMapping.generated.h"
+#include "AddInputContextMapping_GameFeatureAction.generated.h"
 
 class UInputMappingContext;
 struct FComponentRequestHandle;
-/**
- * 
- */
-UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UAddInputContextMapping : public UGameFeature_WorldActionBase
+
+
+UCLASS(DisplayName="Add Input Context Mapping")
+class COMBATABILITIESSYSTEMRUNTIME_API UAddInputContextMapping_GameFeatureAction : public UGameFeature_WorldActionBase
 {
 	GENERATED_BODY()
 
@@ -34,7 +33,7 @@ private:
 	virtual void AddToWorld(const FWorldContext& InWorldContext) override;
 
 	void Reset();
-	void HandleControllerExtension(AActor* InActor, FName EventName);
+	void HandleControllerExtension(AActor* InActor, FName InEventName);
 	void AddInputMappingForPlayer(UPlayer* InPlayer);
 	void RemoveInputMapping(APlayerController* InPlayerController);
 	
@@ -46,4 +45,5 @@ private:
 	
 	TArray<TSharedPtr<FComponentRequestHandle>> ExtensionRequestHandles;
 	TArray<TWeakObjectPtr<APlayerController>> ControllersAddedTo;
+	
 };

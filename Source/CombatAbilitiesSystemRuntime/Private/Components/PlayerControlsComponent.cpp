@@ -5,6 +5,8 @@
 
 #include "EnhancedInputSubsystems.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(PlayerControlsComponent)
+
 void UPlayerControlsComponent::SetupPlayerControls_Implementation(UEnhancedInputComponent* InPlayerInputComponent)
 {
 }
@@ -71,7 +73,7 @@ void UPlayerControlsComponent::SetupInputComponent(APawn* InPawn)
 {
 	InputComponent = CastChecked<UEnhancedInputComponent>(InPawn->InputComponent);
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = GetEnhancedInputSubsystem();
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = {GetEnhancedInputSubsystem()};
 	check(Subsystem);
 	if(InputMappingContext)
 	{
@@ -82,8 +84,7 @@ void UPlayerControlsComponent::SetupInputComponent(APawn* InPawn)
 
 void UPlayerControlsComponent::ReleaseInputComponent(AController* OldController)
 {
-	UEnhancedInputLocalPlayerSubsystem* Subsystem {GetEnhancedInputSubsystem(OldController)};
-	if(Subsystem && InputComponent)
+	if(UEnhancedInputLocalPlayerSubsystem* Subsystem {GetEnhancedInputSubsystem(OldController)}; Subsystem && InputComponent)
 	{
 		TeardownPlayerControls(InputComponent);
 		if(InputMappingContext)

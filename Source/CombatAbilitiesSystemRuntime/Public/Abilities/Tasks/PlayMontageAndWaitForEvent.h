@@ -6,7 +6,6 @@
 #include "Abilities/Tasks/AbilityTask.h"
 #include "PlayMontageAndWaitForEvent.generated.h"
 
-class UGDAbilitySystemComponent;
 
 /** Delegate type used, EventTag and Payload may be empty if it came from the montage callbacks */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGDPlayMontageAndWaitForEventDelegate, FGameplayTag, EventTag, FGameplayEventData, EventData);
@@ -24,7 +23,7 @@ class COMBATABILITIESSYSTEMRUNTIME_API UPlayMontageAndWaitForEvent : public UAbi
 	
 public:
 	// Constructor and overrides
-	UPlayMontageAndWaitForEvent(const FObjectInitializer& ObjectInitializer);
+	explicit UPlayMontageAndWaitForEvent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	* The Blueprint node for this task, PlayMontageAndWaitForEvent, has some black magic from the plugin that automagically calls Activate()

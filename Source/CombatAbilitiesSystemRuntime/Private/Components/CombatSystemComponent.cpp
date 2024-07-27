@@ -7,7 +7,8 @@
 #include "Abilities/CombatAttackAbility.h"
 #include "Data/CombatActionData.h"
 
-UCombatSystemComponent::UCombatSystemComponent()
+UCombatSystemComponent::UCombatSystemComponent(const FObjectInitializer& InInitializer) :
+	Super(InInitializer)
 {
 	MeleeAttackAbilityClass = UCombatAttackAbility::StaticClass();
 }
@@ -36,7 +37,6 @@ void UCombatSystemComponent::AbilityLocalInputPressed(int32 InputID)
 			if(Spec.Ability->IsA(UCombatAttackAbility::StaticClass()))
 			{
 				ActivateComboAbility(Spec.Ability.GetClass());
-				UE_LOG(LogCombatAbilitySystem, Warning, TEXT("Combo"));
 			}
 			else
 			{

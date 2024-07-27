@@ -5,6 +5,11 @@
 
 #include "Abilities/Tasks/PlayMontageAndWaitForEvent.h"
 
+UCombatAbilityBase::UCombatAbilityBase(const FObjectInitializer& InInitializer)
+	: Super(InInitializer)
+{
+}
+
 void UCombatAbilityBase::OnMontageCompleted(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
@@ -19,10 +24,11 @@ void UCombatAbilityBase::OnEventReceived(FGameplayTag EventTag, FGameplayEventDa
 {
 }
 
-void UCombatAbilityBase::PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents)
+void UCombatAbilityBase::PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents, const float InRateMontage,
+	const FName& InStartSection, const bool InbStopWhenAbilityEnds)
 {
 	auto* MontageTask {UPlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(this, NAME_None, InMontage, InTagsEvents,
-			1.f)};
+			InRateMontage, InStartSection, InbStopWhenAbilityEnds)};
 	MontageTask->OnCompleted.AddDynamic(this, &UCombatAbilityBase::OnMontageCompleted);
 	MontageTask->OnBlendOut.AddDynamic(this, &UCombatAbilityBase::OnMontageCompleted);
 	MontageTask->OnCancelled.AddDynamic(this, &UCombatAbilityBase::OnMontageCancelled);

@@ -16,7 +16,7 @@ class COMBATABILITIESSYSTEMRUNTIME_API UCombatWarpingComponent : public UMotionW
 	GENERATED_BODY()
 
 public:
-	explicit UCombatWarpingComponent(const FObjectInitializer& InInitializer);
+	explicit UCombatWarpingComponent(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
 	void UpdateWarpTarget();
 	void ResetWarpTarget();

@@ -17,7 +17,7 @@ class COMBATABILITIESSYSTEMRUNTIME_API UCombatSystemComponent : public UDataAbil
 
 public:
 
-	explicit UCombatSystemComponent();
+	explicit UCombatSystemComponent(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
 	virtual void AbilityLocalInputPressed(int32 InputID) override;
 	

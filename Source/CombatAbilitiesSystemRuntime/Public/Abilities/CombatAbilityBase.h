@@ -7,10 +7,13 @@
 #include "CombatAbilityBase.generated.h"
 
 
-UCLASS()
+UCLASS(Abstract)
 class COMBATABILITIESSYSTEMRUNTIME_API UCombatAbilityBase : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	explicit UCombatAbilityBase(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
 protected:
 
@@ -24,7 +27,8 @@ protected:
 	virtual void OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData);
 
 	UFUNCTION(BlueprintCallable)
-	void PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents);
+	void PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents, const float InRateMontage = 1.f,
+		const FName& InStartSection = NAME_None, const bool InbStopWhenAbilityEnds = true);
 
 	FORCENOINLINE FGameplayTagContainer GetEventsTags() const { return WaitMontageEvents;}
 	

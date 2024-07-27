@@ -24,6 +24,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Health);
 	
 	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Strength);
+	
+	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Damage);
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
@@ -35,5 +37,8 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, Category="Strength", meta=(AllowPrivateAccess="true"))
 	FGameplayAttributeData Strength;
+
+	UPROPERTY(BlueprintReadOnly, Category="Strength", meta=(AllowPrivateAccess="true"))
+	FGameplayAttributeData Damage;
 	
 };

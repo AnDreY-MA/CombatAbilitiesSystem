@@ -1,6 +1,4 @@
 
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "GameFeature/AddAbilities_GameFeatureAction.h"
 
 #include "AbilitySystemComponent.h"
@@ -12,10 +10,10 @@
 #include "Input/AbilityInputBindingComponent.h"
 
 
-#define LOCTEXT_NAMESPACE "<PROJECT_NAME>Features"
+#define LOCTEXT_NAMESPACE "CombatAbilitiesSystemFeatures"
 
-//////////////////////////////////////////////////////////////////////
-// UAddAbilities_GameFeatureAction
+#include UE_INLINE_GENERATED_CPP_BY_NAME(AddAbilities_GameFeatureAction)
+
 
 void UAddAbilities_GameFeatureAction::OnGameFeatureActivating()
 {
@@ -70,7 +68,7 @@ void UAddAbilities_GameFeatureAction::AddAdditionalAssetBundleData(FAssetBundleD
 #if WITH_EDITOR
 EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>& ValidationErrors)
 {
-	EDataValidationResult Result = CombineDataValidationResults(Super::IsDataValid(ValidationErrors), EDataValidationResult::Valid);
+	EDataValidationResult Result {CombineDataValidationResults(Super::IsDataValid(ValidationErrors), EDataValidationResult::Valid)};
 
 	int32 EntryIndex {0};
 	for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
@@ -120,7 +118,6 @@ EDataValidationResult UAddAbilities_GameFeatureAction::IsDataValid(TArray<FText>
 
 void UAddAbilities_GameFeatureAction::AddToWorld(const FWorldContext& WorldContext)
 {
-	UE_LOG(LogCombatAbilitySystem, Warning, TEXT("ADD TO WORLD ABILITY"));
 	const UWorld* World {WorldContext.World()};
 	const UGameInstance* GameInstance {WorldContext.OwningGameInstance};
 
@@ -160,7 +157,7 @@ void UAddAbilities_GameFeatureAction::HandleActorExtension(AActor* Actor, FName 
 {
 	if (AbilitiesList.IsValidIndex(EntryIndex))
 	{
-		const FGameFeatureAbilitiesEntry& Entry = AbilitiesList[EntryIndex];
+		const FGameFeatureAbilitiesEntry& Entry {AbilitiesList[EntryIndex]};
 		if (EventName == UGameFrameworkComponentManager::NAME_ExtensionRemoved || EventName == UGameFrameworkComponentManager::NAME_ReceiverRemoved)
 		{
 			RemoveActorAbilities(Actor);
@@ -174,7 +171,7 @@ void UAddAbilities_GameFeatureAction::HandleActorExtension(AActor* Actor, FName 
 
 void UAddAbilities_GameFeatureAction::AddActorAbilities(AActor* Actor, const FGameFeatureAbilitiesEntry& AbilitiesEntry)
 {
-	auto* CombatAbilitySystemComponent = FindOrAddComponentForActor<UCombatSystemComponent>(Actor, AbilitiesEntry);
+	auto* CombatAbilitySystemComponent {FindOrAddComponentForActor<UCombatSystemComponent>(Actor, AbilitiesEntry)};
 	if(!CombatAbilitySystemComponent)
 	{
 		UE_LOG(LogCombatAbilitySystem, Error, TEXT("Failed to find/add an ability component to '%s'. Abilities will not be granted."), *Actor->GetPathName());
@@ -234,18 +231,14 @@ void UAddAbilities_GameFeatureAction::AddActorAbilities(AActor* Actor, const FGa
 UActorComponent* UAddAbilities_GameFeatureAction::FindOrAddComponentForActor(UClass* InComponentType,
 	const AActor* InActor, const FGameFeatureAbilitiesEntry& InAbilitiesEntry)
 {
-	UActorComponent* Component = InActor->FindComponentByClass(InComponentType);
+	UActorComponent* Component {InActor->FindComponentByClass(InComponentType)};
 	
-	bool bMakeComponentRequest = (Component == nullptr);
+	bool bMakeComponentRequest {Component == nullptr};
 	if (Component)
 	{
-		// Check to see if this component was created from a different `UGameFrameworkComponentManager` request.
-		// `Native` is what `CreationMethod` defaults to for dynamically added components.
 		if (Component->CreationMethod == EComponentCreationMethod::Native)
 		{
-			// Attempt to tell the difference between a true native component and one created by the GameFrameworkComponent system.
-			// If it is from the UGameFrameworkComponentManager, then we need to make another request (requests are ref counted).
-			UObject* ComponentArchetype = Component->GetArchetype();
+			const UObject* ComponentArchetype = Component->GetArchetype();
 			bMakeComponentRequest = ComponentArchetype->HasAnyFlags(RF_ClassDefaultObject);
 		}
 	}
@@ -273,17 +266,17 @@ UActorComponent* UAddAbilities_GameFeatureAction::FindOrAddComponentForActor(UCl
 
 void UAddAbilities_GameFeatureAction::RemoveActorAbilities(AActor* Actor)
 {
-	FActorExtensions* ActorExtensions = ActiveExtensions.Find(Actor);
+	FActorExtensions* ActorExtensions {ActiveExtensions.Find(Actor)};
 	if(!ActorExtensions) return;
 
-	if (auto* CombatAbilitySystemComponent = Actor->FindComponentByClass<UCombatSystemComponent>())
+	if (auto* CombatAbilitySystemComponent {Actor->FindComponentByClass<UCombatSystemComponent>()})
 	{
 		for (UAttributeSet* AttribSetInstance : ActorExtensions->Attributes)
 		{
 			CombatAbilitySystemComponent->GetSpawnedAttributes_Mutable().Remove(AttribSetInstance);
 		}
 
-		auto* InputComponent = Actor->FindComponentByClass<UAbilityInputBindingComponent>();
+		auto* InputComponent {Actor->FindComponentByClass<UAbilityInputBindingComponent>()};
 		for (FGameplayAbilitySpecHandle AbilityHandle : ActorExtensions->Abilities)
 		{
 			if (InputComponent)

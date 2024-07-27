@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(AbilityInputBindingComponent)
+
 namespace AbilityInputBindingComponent_Impl
 {
 	constexpr int32 InvalidInputID{0};
@@ -19,13 +21,12 @@ namespace AbilityInputBindingComponent_Impl
 void UAbilityInputBindingComponent::SetInputBinding(UInputAction* InInputAction,
 	FGameplayAbilitySpecHandle AbilitySpecHandle)
 {
-	FGameplayAbilitySpec* BindingAbility = FindAbilitySpec(AbilitySpecHandle);
+	FGameplayAbilitySpec* BindingAbility {FindAbilitySpec(AbilitySpecHandle)};
 
-	FAbilityInputBinding* AbilityInputBinding = MappedAbilities.Find(InInputAction);
+	FAbilityInputBinding* AbilityInputBinding {MappedAbilities.Find(InInputAction)};
 	if(AbilityInputBinding)
 	{
-		FGameplayAbilitySpec* OldBoundAbility = FindAbilitySpec(AbilityInputBinding->BoundAbilitiesStack.Top());
-		if(OldBoundAbility && OldBoundAbility->InputID == AbilityInputBinding->InputID)
+		if(FGameplayAbilitySpec* OldBoundAbility {FindAbilitySpec(AbilityInputBinding->BoundAbilitiesStack.Top())}; OldBoundAbility && OldBoundAbility->InputID == AbilityInputBinding->InputID)
 		{
 			OldBoundAbility->InputID = AbilityInputBindingComponent_Impl::InvalidInputID;
 		}
@@ -48,7 +49,7 @@ void UAbilityInputBindingComponent::SetInputBinding(UInputAction* InInputAction,
 
 void UAbilityInputBindingComponent::ClearInputBinding(FGameplayAbilitySpecHandle InAbilityHandle)
 {
-	FGameplayAbilitySpec* FoundAbility = FindAbilitySpec(InAbilityHandle);
+	FGameplayAbilitySpec* FoundAbility {FindAbilitySpec(InAbilityHandle)};
 	if(!FoundAbility) return;
 
 	auto MappedIterator = MappedAbilities.CreateIterator();
@@ -68,7 +69,7 @@ void UAbilityInputBindingComponent::ClearInputBinding(FGameplayAbilitySpecHandle
 	{
 		if(AbilityInputBinding.BoundAbilitiesStack.Num() > 0)
 		{
-			FGameplayAbilitySpec* StackedAbility = FindAbilitySpec(AbilityInputBinding.BoundAbilitiesStack.Top());
+			FGameplayAbilitySpec* StackedAbility {FindAbilitySpec(AbilityInputBinding.BoundAbilitiesStack.Top())};
 			if(StackedAbility && StackedAbility->InputID == 0)
 			{
 				StackedAbility->InputID = AbilityInputBinding.InputID;
@@ -113,6 +114,7 @@ void UAbilityInputBindingComponent::SetupPlayerControls_Implementation(UEnhanced
 	}
 
 	AbilityComponent = nullptr;
+	
 }
 
 void UAbilityInputBindingComponent::ReleaseInputComponent(AController* OldController)
@@ -120,6 +122,7 @@ void UAbilityInputBindingComponent::ReleaseInputComponent(AController* OldContro
 	ResetBindings();
 	
 	Super::ReleaseInputComponent(OldController);
+	
 }
 
 void UAbilityInputBindingComponent::ResetBindings()
@@ -147,11 +150,12 @@ void UAbilityInputBindingComponent::ResetBindings()
 	}
 
 	AbilityComponent = nullptr;
+	
 }
 
 void UAbilityInputBindingComponent::RunAbilitySystemSetup()
 {
-	AActor* Owner {GetOwner()};
+	const AActor* Owner {GetOwner()};
 	check(Owner);
 
 	AbilityComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
@@ -159,9 +163,9 @@ void UAbilityInputBindingComponent::RunAbilitySystemSetup()
 
 	for (auto& InputBinding : MappedAbilities)
 	{
-		const int32 NewInputID = AbilityInputBindingComponent_Impl::GetNextInputID();
+		const int32 NewInputID {AbilityInputBindingComponent_Impl::GetNextInputID()};
 		InputBinding.Value.InputID = NewInputID;
-		for(FGameplayAbilitySpecHandle AbilityHandle : InputBinding.Value.BoundAbilitiesStack)
+		for(const FGameplayAbilitySpecHandle AbilityHandle : InputBinding.Value.BoundAbilitiesStack)
 		{
 			if(FGameplayAbilitySpec* FoundAbility = AbilityComponent->FindAbilitySpecFromHandle(AbilityHandle); FoundAbility)
 			{
@@ -169,6 +173,7 @@ void UAbilityInputBindingComponent::RunAbilitySystemSetup()
 			}
 		}
 	}
+	
 }
 
 void UAbilityInputBindingComponent::OnAbilityInputPressed(UInputAction* InInputAction)
@@ -179,28 +184,28 @@ void UAbilityInputBindingComponent::OnAbilityInputPressed(UInputAction* InInputA
 	}
 	if(AbilityComponent)
 	{
-		FAbilityInputBinding* FoundBinding = MappedAbilities.Find(InInputAction);
-		if(FoundBinding && ensure(FoundBinding->InputID) != AbilityInputBindingComponent_Impl::InvalidInputID)
+		if(const FAbilityInputBinding* FoundBinding {MappedAbilities.Find(InInputAction)}; FoundBinding && ensure(FoundBinding->InputID) != AbilityInputBindingComponent_Impl::InvalidInputID)
 		{
 			AbilityComponent->AbilityLocalInputPressed(FoundBinding->InputID);
 		}
 	}
+	
 }
 
 void UAbilityInputBindingComponent::OnAbilityInputReleased(UInputAction* InInputAction)
 {
 	if(!AbilityComponent) return;
 
-	FAbilityInputBinding* FoundBinding = MappedAbilities.Find(InInputAction);
-	if(FoundBinding && ensure(FoundBinding->InputID != AbilityInputBindingComponent_Impl::InvalidInputID))
+	if(const FAbilityInputBinding* FoundBinding {MappedAbilities.Find(InInputAction)}; FoundBinding && ensure(FoundBinding->InputID != AbilityInputBindingComponent_Impl::InvalidInputID))
 	{
 		AbilityComponent->AbilityLocalInputReleased(FoundBinding->InputID);
 	}
+	
 }
 
 void UAbilityInputBindingComponent::RemoveEntry(UInputAction* InInputAction)
 {
-	if(FAbilityInputBinding* Binding = MappedAbilities.Find(InInputAction))
+	if(FAbilityInputBinding* Binding {MappedAbilities.Find(InInputAction)})
 	{
 		if(auto* CurrentInputComponent {GetInputComponent()}; CurrentInputComponent)
 		{
@@ -219,6 +224,7 @@ void UAbilityInputBindingComponent::RemoveEntry(UInputAction* InInputAction)
 
 		MappedAbilities.Remove(InInputAction);
 	}
+	
 }
 
 FGameplayAbilitySpec* UAbilityInputBindingComponent::FindAbilitySpec(FGameplayAbilitySpecHandle InHandle)
@@ -229,6 +235,7 @@ FGameplayAbilitySpec* UAbilityInputBindingComponent::FindAbilitySpec(FGameplayAb
 		FoundAbility = AbilityComponent->FindAbilitySpecFromHandle(InHandle);
 	}
 	return FoundAbility;
+	
 }
 
 void UAbilityInputBindingComponent::TryBindAbilityInput(UInputAction* InInputAction,
@@ -246,4 +253,5 @@ void UAbilityInputBindingComponent::TryBindAbilityInput(UInputAction* InInputAct
 			InAbilityInputBinding.OnReleasedHandle = CurrentInputComponent->BindAction(InInputAction, ETriggerEvent::Completed, this, &UAbilityInputBindingComponent::OnAbilityInputReleased, InInputAction).GetHandle();
 		}
 	}
+
 }

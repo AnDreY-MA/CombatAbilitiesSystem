@@ -26,8 +26,7 @@ public class CombatAbilitiesSystemRuntime : ModuleRules
 			new string[]
 			{
 				"Core",
-				"MotionWarping"
-				// ... add other public dependencies that you statically link with here ...
+				"MotionWarping", "AIModule", "GameplayAbilities"
 			}
 			);
 			
@@ -40,14 +39,12 @@ public class CombatAbilitiesSystemRuntime : ModuleRules
 				"Slate",
 				"SlateCore",
 				"GameFeatures", 
-				"GameplayAbilities", 
 				"GameplayTags", 
 				"GameplayTasks",
 				"EnhancedInput",
 				"ModularGameplay"
-				// ... add private dependencies that you statically link with here ...	
 			}
-			);
+		);
 		
 		
 		DynamicallyLoadedModuleNames.AddRange(
