@@ -4,11 +4,10 @@
 #include "Abilities/RangedAttackAbility.h"
 
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
 #include "CombatAbilitiesSystemRuntimeModule.h"
-#include "CombatComponentInterface.h"
 #include "Abilities/Tasks/SpawnProjectile_Task.h"
 #include "Actors/CombatProjectile.h"
+#include "Interfaces/CombatComponentInterface.h"
 #include "Logging/StructuredLog.h"
 
 void URangedAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

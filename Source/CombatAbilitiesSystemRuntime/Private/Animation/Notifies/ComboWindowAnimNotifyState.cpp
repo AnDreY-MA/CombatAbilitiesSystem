@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Animation/ComboWindowAnimNotifyState.h"
+#include "Animation/Notifies/ComboWindowAnimNotifyState.h"
 
 #include "AbilitySystemComponent.h"
 #include "CombatAbilitiesSystemRuntimeModule.h"
-#include "CombatComponentInterface.h"
+#include "Interfaces/CombatComponentInterface.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(ComboWindowAnimNotifyState)
 

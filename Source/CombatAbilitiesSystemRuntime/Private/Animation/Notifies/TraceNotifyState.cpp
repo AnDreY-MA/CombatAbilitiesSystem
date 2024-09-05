@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Animation/TraceNotifyState.h"
+#include "Animation/Notifies/TraceNotifyState.h"
 
 #include "Components/CombatTraceComponent.h"
 

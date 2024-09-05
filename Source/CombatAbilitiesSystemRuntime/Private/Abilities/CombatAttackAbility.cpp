@@ -6,7 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "CombatComponentInterface.h"
+#include "Interfaces/CombatComponentInterface.h"
 #include "CombatSystemFunctionLibrary.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CombatAttackAbility)

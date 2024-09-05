@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "DataAbilitySystemComponent.h"
-#include "CombatComponentInterface.h"
+#include "Interfaces/CombatComponentInterface.h"
 #include "CombatSystemComponent.generated.h"
 
 
