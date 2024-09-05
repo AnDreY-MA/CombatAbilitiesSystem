@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Data/CombatActionData.h"
 #include "UObject/Interface.h"
 #include "CombatComponentInterface.generated.h"
 
@@ -17,17 +18,17 @@ class UCombatComponentInterface : public UInterface
 /**
  * 
  */
-class COMBATABILITIESSYSTEMRUNTIME_API ICombatComponentInterface
+class COMBATABILITIESSYSTEMRUNTIME_API ICombatComponentInterface	
 {
 	GENERATED_BODY()
 
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Combat Component")
-	UAnimMontage* GetCurrentMontage();
+	TArray<FCombatAnimationInfo> GetMontageAction(const FGameplayTag& InTagName) const;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Combat Component")
-	UAnimMontage* GetDodgeMontage();
+	FCombatAnimationInfo GetComboMontageAction(const FGameplayTag& InTagName);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Combat Component")
 	void IncrementComboIndex();

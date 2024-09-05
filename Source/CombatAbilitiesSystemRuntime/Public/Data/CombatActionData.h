@@ -8,6 +8,19 @@
 class UAnimMontage;
 
 USTRUCT(BlueprintType, Blueprintable)
+struct FCombatAnimationInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAnimMontage> Montage{nullptr};
+
+	UPROPERTY(EditDefaultsOnly)
+	float Speed{1.0f};
+	
+};
+
+USTRUCT(BlueprintType, Blueprintable)
 struct COMBATABILITIESSYSTEMRUNTIME_API FCombatActionData : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -16,6 +29,6 @@ struct COMBATABILITIESSYSTEMRUNTIME_API FCombatActionData : public FTableRowBase
 	FGameplayTag TypeAction;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Setting")
-	TArray<TObjectPtr<UAnimMontage>> Animations;
+	TArray<FCombatAnimationInfo> Animations;
 	
 };

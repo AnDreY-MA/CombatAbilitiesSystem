@@ -7,9 +7,7 @@
 #include "CombatComponentInterface.h"
 #include "CombatSystemComponent.generated.h"
 
-/**
- * 
- */
+
 UCLASS(meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEMRUNTIME_API UCombatSystemComponent : public UDataAbilitySystemComponent, public ICombatComponentInterface
 {
@@ -22,9 +20,9 @@ public:
 	virtual void AbilityLocalInputPressed(int32 InputID) override;
 	
 	// Begin ICombatComponentInterface
-	virtual UAnimMontage* GetCurrentMontage_Implementation() override;
+	virtual TArray<FCombatAnimationInfo> GetMontageAction_Implementation(const FGameplayTag& InTagName) const override;
 
-	virtual UAnimMontage* GetDodgeMontage_Implementation() override;
+	virtual FCombatAnimationInfo GetComboMontageAction_Implementation(const FGameplayTag& InTagName) override;
 
 	virtual UGameplayAbility* GetCurrentActiveComboAbility_Implementation() const override;
 
@@ -54,23 +52,18 @@ private:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Abilities|Anims")
-	TObjectPtr<UDataTable> CombatActionTable{nullptr};
-
-	UPROPERTY(EditDefaultsOnly, Category="Abilities|Anims")
-	TObjectPtr<UAnimMontage> DodgeMontage{nullptr};
-
+	TObjectPtr<UDataTable> CombatActionTable;
+	
 	UPROPERTY()
-	int32 ComboIndex{0};
+	int32 ComboIndex;
 
 	UPROPERTY()
-	bool bWindowComboAttack{false};
+	bool bWindowComboAttack;
 	UPROPERTY()
-	bool bRequestTriggerCombo{false};
+	bool bRequestTriggerCombo;
 	UPROPERTY()
-	bool bNextComboAbilityActivated{false};
+	bool bNextComboAbilityActivated;
 	UPROPERTY()
-	bool bShouldTriggerCombo{false};
-
-	UPROPERTY()
-	TSubclassOf<UGameplayAbility> MeleeAttackAbilityClass;
+	bool bShouldTriggerCombo;
+	
 };

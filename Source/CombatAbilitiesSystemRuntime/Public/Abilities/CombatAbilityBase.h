@@ -25,12 +25,17 @@ protected:
 	
 	UFUNCTION()
 	virtual void OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData);
+		
+	UFUNCTION(BlueprintCallable, Category="CombatAbility")
+    void PlayMontageWaitEvents(UAnimMontage* InMontage, const FGameplayTagContainer& InEventTags, const float InRateMontage = 1.f,
+    		const FName& InStartSection = NAME_None, const bool InbStopWhenAbilityEnds = true);
 
-	UFUNCTION(BlueprintCallable)
-	void PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents, const float InRateMontage = 1.f,
+	UFUNCTION(BlueprintCallable, Category="CombatAbility")
+	void PlayMontageWaitEventsDefault(UAnimMontage* InMontage, const float InRateMontage = 1.f,
 		const FName& InStartSection = NAME_None, const bool InbStopWhenAbilityEnds = true);
 
-	FORCENOINLINE FGameplayTagContainer GetEventsTags() const { return WaitMontageEvents;}
+	UFUNCTION(BlueprintCallable, Category="Abilities|Combat")
+	void ActivateGameplayCue(const FGameplayTag& InCueTag, FGameplayCueParameters InParameters);
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Combat|Events")

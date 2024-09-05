@@ -9,11 +9,13 @@ void UCombatAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 
 	if(Attribute == GetHealthAttribute())
 	{
-		//NewValue = FMath::Clamp(0.0f, GetHe)
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
 	}
+	
 }
 
 void UCombatAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
 }

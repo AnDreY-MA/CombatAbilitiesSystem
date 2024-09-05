@@ -23,6 +23,8 @@ class COMBATABILITIESSYSTEMRUNTIME_API UCombatAttributeSet : public UAttributeSe
 public:
 	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Health);
 	
+	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, MaxHealth);
+	
 	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Strength);
 	
 	ATTRIBUTE_ACCESSORS(UCombatAttributeSet, Damage);
@@ -34,6 +36,8 @@ public:
 private:
 	UPROPERTY(BlueprintReadOnly, Category="Health", meta=(AllowPrivateAccess="true"))
 	FGameplayAttributeData Health;
+	UPROPERTY(BlueprintReadOnly, Category="Health", meta=(AllowPrivateAccess="true"))
+	FGameplayAttributeData MaxHealth;
 
 	UPROPERTY(BlueprintReadOnly, Category="Strength", meta=(AllowPrivateAccess="true"))
 	FGameplayAttributeData Strength;

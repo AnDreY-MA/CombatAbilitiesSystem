@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ComboAbility.h"
 #include "Abilities/CombatAbilityBase.h"
+#include "Data/CombatActionData.h"
 #include "CombatAttackAbility.generated.h"
 
 
-UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatAttackAbility : public UCombatAbilityBase
+UCLASS(Abstract)
+class COMBATABILITIESSYSTEMRUNTIME_API UCombatAttackAbility : public UComboAbility
 {
 	GENERATED_BODY()
 
@@ -20,16 +22,15 @@ protected:
 
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category="Combat")
+	UPROPERTY(EditDefaultsOnly, Category="Combat|Hit")
 	float PauseHitMontage{0.05f};
-
-	UPROPERTY(EditDefaultsOnly, Category="Combat")
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
+	
+	UPROPERTY()
+	FCombatAnimationInfo AttackAnimation;
 
 	UPROPERTY()
-	TObjectPtr<UAnimMontage> AttackMontage;
+	TArray<AActor*> HitActors;
 
 	void ResetMontage() const;
-
 	
 };

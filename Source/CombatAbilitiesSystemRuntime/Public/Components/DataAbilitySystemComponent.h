@@ -14,7 +14,7 @@ struct FCombatAttributeData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UAttributeSet> AttributeSetType;
+	TSubclassOf<UAttributeSet> AttributeSetType{nullptr};
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UDataTable> DataTable{nullptr};
@@ -34,6 +34,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="CombatAbilities")
 	FGameplayAbilitySpecHandle GrantAbilityOfType(TSubclassOf<UGameplayAbility> InAbilityType, const bool bRemoveAfterActivation);
+
 	void SetupAbilities();
 	void SetupAttributes();
 	void RemoveAllAbilitiesAndAttributes();

@@ -7,13 +7,16 @@
 #include "Abilities/CombatAttackAbility.h"
 #include "Data/CombatActionData.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatSystemComponent)
+
 UCombatSystemComponent::UCombatSystemComponent(const FObjectInitializer& InInitializer) :
-	Super(InInitializer)
+	Super(InInitializer), ComboIndex(0), bWindowComboAttack(false), bRequestTriggerCombo(false),
+	bNextComboAbilityActivated(false),
+	bShouldTriggerCombo(false)
 {
-	MeleeAttackAbilityClass = UCombatAttackAbility::StaticClass();
 }
 
-void UCombatSystemComponent::AbilityLocalInputPressed(int32 InputID)
+void UCombatSystemComponent::AbilityLocalInputPressed(const int32 InputID)
 {
 	if(IsGenericConfirmInputBound(InputID))
 	{
@@ -26,8 +29,6 @@ void UCombatSystemComponent::AbilityLocalInputPressed(int32 InputID)
 		return;
 	}
 	
-	ABILITYLIST_SCOPE_LOCK()
-
 	for(FGameplayAbilitySpec Spec : ActivatableAbilities.Items)
 	{
 		if(Spec.InputID == InputID && Spec.Ability)
@@ -53,26 +54,39 @@ void UCombatSystemComponent::AbilityLocalInputPressed(int32 InputID)
 	}
 }
 
-UAnimMontage* UCombatSystemComponent::GetCurrentMontage_Implementation()
+TArray<FCombatAnimationInfo> UCombatSystemComponent::GetMontageAction_Implementation(const FGameplayTag& InTagName) const
 {
-	FCombatActionData ActionData = *CombatActionTable->FindRow<FCombatActionData>("Sword", "CombatContext");
+	if(!CombatActionTable)
+	{
+		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("CombatActionTable is nullptr"));
+		return {};
+	}
+	if(!InTagName.IsValid())
+	{
+		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("Parramenter InTagName is no valid"));
+		return {};
+	}
 	
-	if(ComboIndex >= ActionData.Animations.Num())
+	FCombatActionData ActionData = *CombatActionTable->FindRow<FCombatActionData>(InTagName.GetTagName(), "CombatContext");
+	
+	return ActionData.Animations;	
+}
+
+FCombatAnimationInfo UCombatSystemComponent::GetComboMontageAction_Implementation(const FGameplayTag& InTagName)
+{
+	TArray<FCombatAnimationInfo> Animations = GetMontageAction_Implementation(InTagName);
+	
+	if(ComboIndex >= Animations.Num())
 	{
 		ComboIndex = 0;
 	}
 
-	return ActionData.Animations.IsValidIndex(ComboIndex) ? ActionData.Animations[ComboIndex] : nullptr;
-}
-
-UAnimMontage* UCombatSystemComponent::GetDodgeMontage_Implementation()
-{
-	return DodgeMontage;
+	return Animations.IsValidIndex(ComboIndex) ? Animations[ComboIndex] : FCombatAnimationInfo();
 }
 
 UGameplayAbility* UCombatSystemComponent::GetCurrentActiveComboAbility_Implementation() const
 {
-	TArray<UGameplayAbility*> Abilities = GetActiveAbilitiesByClass(MeleeAttackAbilityClass);
+	TArray<UGameplayAbility*> Abilities = GetActiveAbilitiesByClass(UComboAbility::StaticClass());
 
 	return Abilities.IsValidIndex(0) ? Abilities[0] : nullptr;
 }
@@ -120,7 +134,6 @@ bool UCombatSystemComponent::IsRequestTriggerCombo_Implementation() const
 void UCombatSystemComponent::OpenComboWindow_Implementation()
 {
 	bWindowComboAttack = true;
-
 }
 
 bool UCombatSystemComponent::IsOpenComboWindow_Implementation() const

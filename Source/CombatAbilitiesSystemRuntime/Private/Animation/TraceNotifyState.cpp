@@ -24,6 +24,8 @@ void UTraceNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenc
 {
 	Super::NotifyEnd(MeshComp, Animation, EventReference);
 
+	if (!MeshComp || !MeshComp->GetOwner()) return;
+
 	if(auto* TraceComponent{MeshComp->GetOwner()->GetComponentByClass<UCombatTraceComponent>()}; TraceComponent)
 	{
 		TraceComponent->DeactivateTrace();

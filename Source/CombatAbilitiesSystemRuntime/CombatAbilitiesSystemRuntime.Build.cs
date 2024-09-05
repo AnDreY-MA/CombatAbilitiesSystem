@@ -38,7 +38,7 @@ public class CombatAbilitiesSystemRuntime : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"GameFeatures", 
+				"GameFeatures",
 				"GameplayTags", 
 				"GameplayTasks",
 				"EnhancedInput",

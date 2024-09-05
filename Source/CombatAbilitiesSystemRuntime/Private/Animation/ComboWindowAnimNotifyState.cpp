@@ -7,6 +7,13 @@
 #include "CombatAbilitiesSystemRuntimeModule.h"
 #include "CombatComponentInterface.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ComboWindowAnimNotifyState)
+
+UComboWindowAnimNotifyState::UComboWindowAnimNotifyState(const FObjectInitializer& InInitializer) :
+	Super(InInitializer), bEndCombo(false)
+{
+}
+
 void UComboWindowAnimNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
                                               float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -55,11 +62,9 @@ void UComboWindowAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, U
 	
 	if(bOpenWindowCombo && bShouldTriggerCombo && bRequestTriggerCombo && !bEndCombo)
 	{
-		UE_LOG(LogAbilitySystemComponent, Warning, TEXT("Request Combo"));
 
 		if(ICombatComponentInterface::Execute_IsActiveNextCombo(CombatComponent))
 		{
-			UE_LOG(LogAbilitySystemComponent, Warning, TEXT("Active Next Combo"));
 			return;
 		}
 
@@ -70,11 +75,8 @@ void UComboWindowAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, U
 			return;
 		}
 
-		UE_LOG(LogAbilitySystemComponent, Warning, TEXT("Combo Ability %s"), *ComboAbility->GetName());
-		
 		auto* AbilityComponent {MeshComp->GetOwner()->GetComponentByClass<UAbilitySystemComponent>()};
-		const bool bSuccess {AbilityComponent->TryActivateAbilityByClass(ComboAbility->GetClass())};
-		if(bSuccess)
+		if(const bool bSuccess {AbilityComponent->TryActivateAbilityByClass(ComboAbility->GetClass())}; bSuccess)
 		{
 			ICombatComponentInterface::Execute_ActivateNextCombo(CombatComponent);
 		}

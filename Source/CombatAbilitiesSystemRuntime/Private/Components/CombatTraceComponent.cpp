@@ -46,7 +46,11 @@ void UCombatTraceComponent::DeactivateTrace()
 
 void UCombatTraceComponent::ChangeTracingComponent(USceneComponent* InSceneComponent)
 {
-	TracingComponent = InSceneComponent;
+	if(InSceneComponent)
+	{
+		TracingComponent = InSceneComponent;
+	}
+	
 }
 
 void UCombatTraceComponent::DoTrace() const
@@ -69,7 +73,7 @@ void UCombatTraceComponent::DoTrace() const
 	{
 		World->AsyncLineTraceByChannel(EAsyncTraceType::Single, Start, End, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
 	}
-	else
+	else if(TraceStyleType == ECombatCollisionStyleType::Sweep)
 	{
 		if(ShapeType == ECombatCollisionShapeType::Capsule)
 		{
@@ -81,15 +85,20 @@ void UCombatTraceComponent::DoTrace() const
 
 void UCombatTraceComponent::OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum)
 {
-	if(InTraceDatum.OutHits.Num())
+	if(!InTraceDatum.OutHits.Num()) return;
+	
+	for(auto HitResult : InTraceDatum.OutHits)
 	{
+		auto* HitActor {HitResult.GetActor()};
+		if(!HitActor) continue;
+			
 		FGameplayEventData Payload;
 		Payload.Instigator = GetOwner();
-		Payload.Target = InTraceDatum.OutHits[0].GetActor();
-		Payload.TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(InTraceDatum.OutHits[0].GetActor());
+		Payload.Target = HitActor;
+		Payload.TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(HitActor);
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwner(), EventHitTag, Payload);
-		UE_LOG(LogCombatAbilitySystem, Display, TEXT("Hit Actor %s"), *InTraceDatum.OutHits[0].GetActor()->GetName());
 	}
+	
 }
 
 #if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA

@@ -72,7 +72,6 @@ void UPlayerControlsComponent::OnControllerChanged(APawn* InPawn, AController* I
 void UPlayerControlsComponent::SetupInputComponent(APawn* InPawn)
 {
 	InputComponent = CastChecked<UEnhancedInputComponent>(InPawn->InputComponent);
-
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = {GetEnhancedInputSubsystem()};
 	check(Subsystem);
 	if(InputMappingContext)
@@ -84,7 +83,7 @@ void UPlayerControlsComponent::SetupInputComponent(APawn* InPawn)
 
 void UPlayerControlsComponent::ReleaseInputComponent(AController* OldController)
 {
-	if(UEnhancedInputLocalPlayerSubsystem* Subsystem {GetEnhancedInputSubsystem(OldController)}; Subsystem && InputComponent)
+	if(auto* Subsystem {GetEnhancedInputSubsystem(OldController)}; Subsystem && InputComponent)
 	{
 		TeardownPlayerControls(InputComponent);
 		if(InputMappingContext)

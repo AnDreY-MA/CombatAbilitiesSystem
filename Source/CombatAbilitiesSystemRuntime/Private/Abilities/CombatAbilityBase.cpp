@@ -3,7 +3,11 @@
 
 #include "Abilities/CombatAbilityBase.h"
 
+#include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/PlayMontageAndWaitForEvent.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatAbilityBase)
+
 
 UCombatAbilityBase::UCombatAbilityBase(const FObjectInitializer& InInitializer)
 	: Super(InInitializer)
@@ -24,10 +28,17 @@ void UCombatAbilityBase::OnEventReceived(FGameplayTag EventTag, FGameplayEventDa
 {
 }
 
-void UCombatAbilityBase::PlayMontageWaitEvent(UAnimMontage* InMontage, const FGameplayTagContainer& InTagsEvents, const float InRateMontage,
+void UCombatAbilityBase::PlayMontageWaitEventsDefault(UAnimMontage* InMontage, const float InRateMontage,
 	const FName& InStartSection, const bool InbStopWhenAbilityEnds)
 {
-	auto* MontageTask {UPlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(this, NAME_None, InMontage, InTagsEvents,
+	PlayMontageWaitEvents(InMontage, WaitMontageEvents, InRateMontage, InStartSection, InbStopWhenAbilityEnds);
+
+}
+
+void UCombatAbilityBase::PlayMontageWaitEvents(UAnimMontage* InMontage, const FGameplayTagContainer& InEventTags, const float InRateMontage,
+	const FName& InStartSection, const bool InbStopWhenAbilityEnds)
+{
+	auto* MontageTask {UPlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(this, NAME_None, InMontage, InEventTags,
 			InRateMontage, InStartSection, InbStopWhenAbilityEnds)};
 	MontageTask->OnCompleted.AddDynamic(this, &UCombatAbilityBase::OnMontageCompleted);
 	MontageTask->OnBlendOut.AddDynamic(this, &UCombatAbilityBase::OnMontageCompleted);
@@ -35,4 +46,21 @@ void UCombatAbilityBase::PlayMontageWaitEvent(UAnimMontage* InMontage, const FGa
 	MontageTask->OnInterrupted.AddDynamic(this, &UCombatAbilityBase::OnMontageCancelled);
 	MontageTask->EventReceived.AddDynamic(this, &UCombatAbilityBase::OnEventReceived);
 	MontageTask->ReadyForActivation();
+}
+
+void UCombatAbilityBase::ActivateGameplayCue(const FGameplayTag& InCueTag, FGameplayCueParameters InParameters)
+{
+	auto* SourceAbilityComponent{GetAbilitySystemComponentFromActorInfo_Checked()};
+
+	if(InCueTag.IsValid())
+	{
+		InParameters.Instigator = SourceAbilityComponent->GetAvatarActor();
+		InParameters.EffectContext = SourceAbilityComponent->MakeEffectContext();
+		InParameters.SourceObject = SourceAbilityComponent;
+		SourceAbilityComponent->GetOwnedGameplayTags(InParameters.AggregatedSourceTags);
+
+		SourceAbilityComponent->AddGameplayCue(InCueTag, InParameters);
+		TrackedGameplayCues.Add(InCueTag);
+	}
+
 }

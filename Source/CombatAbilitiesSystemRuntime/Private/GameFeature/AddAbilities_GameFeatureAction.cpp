@@ -36,7 +36,7 @@ void UAddAbilities_GameFeatureAction::AddAdditionalAssetBundleData(FAssetBundleD
 {
 	if (!UAssetManager::IsValid()) return;
 	
-	auto AddBundleAsset = [&AssetBundleData](const FSoftObjectPath& SoftObjectPath)
+	auto AddBundleAsset = [&AssetBundleData](const FTopLevelAssetPath& SoftObjectPath)
 	{
 		AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateClient, SoftObjectPath);
 		AssetBundleData.AddBundleAsset(UGameFeaturesSubsystemSettings::LoadStateServer, SoftObjectPath);
@@ -46,19 +46,19 @@ void UAddAbilities_GameFeatureAction::AddAdditionalAssetBundleData(FAssetBundleD
 	{
 		for (const FCombatAbilityMapping& Ability : Entry.GrantedAbilities)
 		{
-			AddBundleAsset(Ability.Ability.ToSoftObjectPath());
+			AddBundleAsset(FTopLevelAssetPath(Ability.Ability->GetPathName()));
 			if (!Ability.InputAction.IsNull())
 			{
-				AddBundleAsset(Ability.InputAction.ToSoftObjectPath());
+				AddBundleAsset(FTopLevelAssetPath{Ability.InputAction->GetPathName()});
 			}
 		}
 
 		for (const FCombatAttributesMapping& Attributes : Entry.GrantedAttributes)
 		{
-			AddBundleAsset(Attributes.Attribute.ToSoftObjectPath());
+			AddBundleAsset(FTopLevelAssetPath(Attributes.Attribute->GetPathName()));
 			if (!Attributes.AttributeData.IsNull())
 			{
-				AddBundleAsset(Attributes.AttributeData.ToSoftObjectPath());
+				AddBundleAsset(FTopLevelAssetPath(Attributes.AttributeData->GetPathName()));
 			}
 		}
 	}
@@ -120,26 +120,29 @@ void UAddAbilities_GameFeatureAction::AddToWorld(const FWorldContext& WorldConte
 {
 	const UWorld* World {WorldContext.World()};
 	const UGameInstance* GameInstance {WorldContext.OwningGameInstance};
+	if(!GameInstance && !World && !World->IsGameWorld()) return;
 
-	if ((GameInstance != nullptr) && (World != nullptr) && World->IsGameWorld())
+	UGameFrameworkComponentManager* ComponentManager {UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance)};
+	if(!ComponentManager)
 	{
-		if (UGameFrameworkComponentManager* ComponentMan {UGameInstance::GetSubsystem<UGameFrameworkComponentManager>(GameInstance)})
-		{			
-			int32 EntryIndex {0};
-			for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
-			{
-				if (!Entry.ActorClass.IsNull())
-				{
-					UGameFrameworkComponentManager::FExtensionHandlerDelegate AddAbilitiesDelegate {UGameFrameworkComponentManager::FExtensionHandlerDelegate::CreateUObject(
-						this, &UAddAbilities_GameFeatureAction::HandleActorExtension, EntryIndex)};
-					TSharedPtr<FComponentRequestHandle> ExtensionRequestHandle {ComponentMan->AddExtensionHandler(Entry.ActorClass, AddAbilitiesDelegate)};
+		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("Failed to get UGameFrameworkComponentManager from %s"), *GameInstance->GetName())
+		return;
+	}
 
-					ComponentRequests.Add(ExtensionRequestHandle);
-					EntryIndex++;
-				}
-			}
+	int32 EntryIndex {0};
+	for (const FGameFeatureAbilitiesEntry& Entry : AbilitiesList)
+	{
+		if (!Entry.ActorClass.IsNull())
+		{
+			UGameFrameworkComponentManager::FExtensionHandlerDelegate AddAbilitiesDelegate {UGameFrameworkComponentManager::FExtensionHandlerDelegate::CreateUObject(
+				this, &UAddAbilities_GameFeatureAction::HandleActorExtension, EntryIndex)};
+			TSharedPtr<FComponentRequestHandle> ExtensionRequestHandle {ComponentManager->AddExtensionHandler(Entry.ActorClass, AddAbilitiesDelegate)};
+
+			ComponentRequests.Add(ExtensionRequestHandle);
+			EntryIndex++;
 		}
 	}
+	
 }
 
 void UAddAbilities_GameFeatureAction::Reset()
@@ -290,6 +293,5 @@ void UAddAbilities_GameFeatureAction::RemoveActorAbilities(AActor* Actor)
 	ActiveExtensions.Remove(Actor);
 	
 }
-
 
 #undef LOCTEXT_NAMESPACE

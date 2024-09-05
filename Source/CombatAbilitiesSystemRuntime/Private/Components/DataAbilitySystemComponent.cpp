@@ -6,6 +6,8 @@
 #include "CombatAbilitiesSystemRuntimeModule.h"
 #include "Abilities/CombatAbilityBase.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(DataAbilitySystemComponent)
+
 void UDataAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor)
 {
 	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
@@ -88,7 +90,7 @@ bool UDataAbilitySystemComponent::IsUsingAbilityByClass(const TSubclassOf<UGamep
 {
 	if(!InAbilityClass)
 	{
-		UE_LOG(LogAbilitySystemComponent, Error, TEXT("IsUsingAbilityByClass() provided AbilityClass is null"))
+		UE_LOG(LogCombatAbilitySystem, Error, TEXT("IsUsingAbilityByClass() provided AbilityClass is null"))
 		return false;
 	}
 
