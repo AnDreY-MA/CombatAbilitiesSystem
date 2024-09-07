@@ -21,7 +21,7 @@ struct FCombatAnimationInfo
 };
 
 USTRUCT(BlueprintType, Blueprintable)
-struct COMBATABILITIESSYSTEMRUNTIME_API FCombatActionData : public FTableRowBase
+struct COMBATABILITIESSYSTEM_API FCombatActionData : public FTableRowBase
 {
 	GENERATED_BODY()
 	

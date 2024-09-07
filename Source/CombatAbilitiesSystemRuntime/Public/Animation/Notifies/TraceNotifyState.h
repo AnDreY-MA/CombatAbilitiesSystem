@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UTraceNotifyState : public UAnimNotifyState
+class COMBATABILITIESSYSTEM_API UTraceNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()
 

@@ -8,7 +8,7 @@
 
 
 UCLASS(Abstract)
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatAbilityBase : public UGameplayAbility
+class COMBATABILITIESSYSTEM_API UCombatAbilityBase : public UGameplayAbility
 {
 	GENERATED_BODY()
 

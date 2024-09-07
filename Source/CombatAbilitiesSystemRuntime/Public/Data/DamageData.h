@@ -6,7 +6,7 @@ class UGameplayEffect;
 class UAbilitySystemComponent;
 
 USTRUCT(BlueprintType)
-struct COMBATABILITIESSYSTEMRUNTIME_API FDamageEffectData
+struct COMBATABILITIESSYSTEM_API FDamageEffectData
 {
 	GENERATED_BODY()
 

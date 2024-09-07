@@ -11,7 +11,7 @@ struct FDamageEffectData;
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatSystemFunctionLibrary : public UBlueprintFunctionLibrary
+class COMBATABILITIESSYSTEM_API UCombatSystemFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 

@@ -17,7 +17,7 @@
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "CombatAbilitiesSystemRuntime",
+			"Name": "CombatAbilitiesSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}

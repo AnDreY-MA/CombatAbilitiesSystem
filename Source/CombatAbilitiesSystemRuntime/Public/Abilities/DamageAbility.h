@@ -11,7 +11,7 @@
  * 
  */
 UCLASS(Abstract)
-class COMBATABILITIESSYSTEMRUNTIME_API UDamageAbility : public UCombatAbilityBase
+class COMBATABILITIESSYSTEM_API UDamageAbility : public UCombatAbilityBase
 {
 	GENERATED_BODY()
 

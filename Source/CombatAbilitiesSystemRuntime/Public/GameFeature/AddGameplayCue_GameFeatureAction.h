@@ -10,7 +10,7 @@
  * 
  */
 UCLASS(DisplayName="Add Gameplay Cue Path")
-class COMBATABILITIESSYSTEMRUNTIME_API UAddGameplayCue_GameFeatureAction final : public UGameFeatureAction
+class COMBATABILITIESSYSTEM_API UAddGameplayCue_GameFeatureAction final : public UGameFeatureAction
 {
 	GENERATED_BODY()
 

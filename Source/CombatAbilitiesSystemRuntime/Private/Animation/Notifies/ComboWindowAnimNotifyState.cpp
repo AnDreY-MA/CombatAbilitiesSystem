@@ -4,7 +4,7 @@
 #include "Animation/Notifies/ComboWindowAnimNotifyState.h"
 
 #include "AbilitySystemComponent.h"
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Interfaces/CombatComponentInterface.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(ComboWindowAnimNotifyState)

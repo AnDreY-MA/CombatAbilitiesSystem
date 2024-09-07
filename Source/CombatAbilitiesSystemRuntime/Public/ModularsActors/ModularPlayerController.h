@@ -8,7 +8,7 @@
 
 
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularPlayerController : public APlayerController
+class COMBATABILITIESSYSTEM_API AModularPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 

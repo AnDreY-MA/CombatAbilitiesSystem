@@ -7,7 +7,7 @@
 #include "ComboWindowAnimNotifyState.generated.h"
 
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UComboWindowAnimNotifyState : public UAnimNotifyState
+class COMBATABILITIESSYSTEM_API UComboWindowAnimNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()
 

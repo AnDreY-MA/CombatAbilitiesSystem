@@ -10,7 +10,7 @@
 
 
 UCLASS(Abstract)
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatAttackAbility : public UComboAbility
+class COMBATABILITIESSYSTEM_API UCombatAttackAbility : public UComboAbility
 {
 	GENERATED_BODY()
 

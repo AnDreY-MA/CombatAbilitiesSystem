@@ -3,7 +3,7 @@
 
 #include "CombatSystemAssetManager.h"
 
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 
 #include "GameplayTagsManager.h"
 

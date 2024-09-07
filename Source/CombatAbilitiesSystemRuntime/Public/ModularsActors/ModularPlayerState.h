@@ -11,7 +11,7 @@ namespace EEndPlayReason { enum Type : int; }
 class UObject;
 
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularPlayerState : public APlayerState
+class COMBATABILITIESSYSTEM_API AModularPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 

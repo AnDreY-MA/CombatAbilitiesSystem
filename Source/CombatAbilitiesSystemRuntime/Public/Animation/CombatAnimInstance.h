@@ -8,7 +8,7 @@
 
 
 UCLASS(ClassGroup=CombatAbilitiesSystem, Abstract)
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatAnimInstance : public UAnimInstance
+class COMBATABILITIESSYSTEM_API UCombatAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 

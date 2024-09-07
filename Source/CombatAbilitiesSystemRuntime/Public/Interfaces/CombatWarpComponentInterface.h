@@ -15,7 +15,7 @@ class UCombatWarpComponentInterface : public UInterface
 /**
  * 
  */
-class COMBATABILITIESSYSTEMRUNTIME_API ICombatWarpComponentInterface
+class COMBATABILITIESSYSTEM_API ICombatWarpComponentInterface
 {
 	GENERATED_BODY()
 

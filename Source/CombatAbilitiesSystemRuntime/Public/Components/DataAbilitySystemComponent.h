@@ -22,7 +22,7 @@ struct FCombatAttributeData
 };
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class COMBATABILITIESSYSTEMRUNTIME_API UDataAbilitySystemComponent : public UAbilitySystemComponent
+class COMBATABILITIESSYSTEM_API UDataAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 

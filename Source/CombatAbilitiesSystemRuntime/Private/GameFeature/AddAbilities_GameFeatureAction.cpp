@@ -2,7 +2,7 @@
 #include "GameFeature/AddAbilities_GameFeatureAction.h"
 
 #include "AbilitySystemComponent.h"
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Components/GameFrameworkComponentManager.h"
 #include "GameFeaturesSubsystemSettings.h"
 #include "Components/CombatSystemComponent.h"

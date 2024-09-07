@@ -7,7 +7,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogCombatAbilitySystem, All, All);
 
-class FCombatAbilitiesSystemRuntimeModule : public IModuleInterface
+class FCombatAbilitiesSystemModule : public IModuleInterface
 {
 public:
 	//~IModuleInterface

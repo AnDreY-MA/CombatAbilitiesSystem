@@ -13,7 +13,7 @@ class UInputMappingContext;
  * 
  */
 UCLASS(BlueprintType, Blueprintable, meta=(BlueprintSpawnableComponent))
-class COMBATABILITIESSYSTEMRUNTIME_API UPlayerControlsComponent : public UPawnComponent
+class COMBATABILITIESSYSTEM_API UPlayerControlsComponent : public UPawnComponent
 {
 	GENERATED_BODY()
 

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UDamageExecutionCalculation : public UGameplayEffectExecutionCalculation
+class COMBATABILITIESSYSTEM_API UDamageExecutionCalculation : public UGameplayEffectExecutionCalculation
 {
 	GENERATED_BODY()
 

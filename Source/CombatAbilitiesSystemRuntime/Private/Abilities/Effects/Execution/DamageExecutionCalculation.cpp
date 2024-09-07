@@ -3,7 +3,7 @@
 
 #include "Abilities/Effects/Execution/DamageExecutionCalculation.h"
 
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Abilities/Attributes/CombatAttributeSet.h"
 
 void UDamageExecutionCalculation::Execute_Implementation(

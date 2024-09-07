@@ -9,7 +9,7 @@ class UObject;
 
 /** Minimal class that supports extension by game feature plugins */
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularAIController : public AAIController
+class COMBATABILITIESSYSTEM_API AModularAIController : public AAIController
 {
 	GENERATED_BODY()
 

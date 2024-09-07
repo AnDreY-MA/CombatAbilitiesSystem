@@ -10,8 +10,8 @@ class ACombatProjectile;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnProjectile, ACombatProjectile*, SpawnedProjectile);
 
-UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API USpawnProjectile_Task : public UAbilityTask
+UCLASS(NotBlueprintable, NotBlueprintType)
+class COMBATABILITIESSYSTEM_API USpawnProjectile_Task final : public UAbilityTask
 {
 	GENERATED_BODY()
 

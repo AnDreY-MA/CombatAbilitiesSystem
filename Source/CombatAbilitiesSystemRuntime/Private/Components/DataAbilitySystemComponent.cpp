@@ -3,7 +3,7 @@
 
 #include "Components/DataAbilitySystemComponent.h"
 
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Abilities/CombatAbilityBase.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(DataAbilitySystemComponent)

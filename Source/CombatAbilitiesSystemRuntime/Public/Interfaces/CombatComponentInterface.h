@@ -18,7 +18,7 @@ class UCombatComponentInterface : public UInterface
 /**
  * 
  */
-class COMBATABILITIESSYSTEMRUNTIME_API ICombatComponentInterface	
+class COMBATABILITIESSYSTEM_API ICombatComponentInterface	
 {
 	GENERATED_BODY()
 

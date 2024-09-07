@@ -51,7 +51,7 @@ struct FGameFeatureAbilitiesEntry
 };
 
 UCLASS(DisplayName="Add Combat Abilities")
-class COMBATABILITIESSYSTEMRUNTIME_API UAddAbilities_GameFeatureAction final : public UGameFeature_WorldActionBase
+class COMBATABILITIESSYSTEM_API UAddAbilities_GameFeatureAction final : public UGameFeature_WorldActionBase
 {
 	GENERATED_BODY()
 

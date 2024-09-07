@@ -12,7 +12,7 @@ class USphereComponent;
 class UGameplayEffect;
 
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API ACombatProjectile : public AActor
+class COMBATABILITIESSYSTEM_API ACombatProjectile : public AActor
 {
 	GENERATED_BODY()
 	

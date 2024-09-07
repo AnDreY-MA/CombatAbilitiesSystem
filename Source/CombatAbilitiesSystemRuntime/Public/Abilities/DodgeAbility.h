@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UDodgeAbility : public UCombatAbilityBase
+class COMBATABILITIESSYSTEM_API UDodgeAbility : public UCombatAbilityBase
 {
 	GENERATED_BODY()
 

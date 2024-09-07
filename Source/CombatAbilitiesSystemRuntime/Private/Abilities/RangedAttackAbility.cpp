@@ -4,7 +4,7 @@
 #include "Abilities/RangedAttackAbility.h"
 
 #include "AbilitySystemComponent.h"
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Abilities/Tasks/SpawnProjectile_Task.h"
 #include "Actors/CombatProjectile.h"
 #include "Interfaces/CombatComponentInterface.h"

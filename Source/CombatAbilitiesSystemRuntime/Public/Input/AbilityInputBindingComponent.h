@@ -22,7 +22,7 @@ struct FAbilityInputBinding
 };
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class COMBATABILITIESSYSTEMRUNTIME_API UAbilityInputBindingComponent : public UPlayerControlsComponent
+class COMBATABILITIESSYSTEM_API UAbilityInputBindingComponent : public UPlayerControlsComponent
 {
 	GENERATED_BODY()
 

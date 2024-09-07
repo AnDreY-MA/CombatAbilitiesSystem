@@ -11,7 +11,7 @@
  * 
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatWarpingComponent : public UMotionWarpingComponent
+class COMBATABILITIESSYSTEM_API UCombatWarpingComponent : public UMotionWarpingComponent
 {
 	GENERATED_BODY()
 

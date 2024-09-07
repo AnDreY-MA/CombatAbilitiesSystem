@@ -9,7 +9,7 @@
 class ACombatProjectile;
 
 UCLASS(Abstract)
-class COMBATABILITIESSYSTEMRUNTIME_API URangedAttackAbility : public UDamageAbility
+class COMBATABILITIESSYSTEM_API URangedAttackAbility : public UDamageAbility
 {
 	GENERATED_BODY()
 

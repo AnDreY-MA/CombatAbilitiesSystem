@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UUpdateWarpNotifyState : public UAnimNotifyState
+class COMBATABILITIESSYSTEM_API UUpdateWarpNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()
 

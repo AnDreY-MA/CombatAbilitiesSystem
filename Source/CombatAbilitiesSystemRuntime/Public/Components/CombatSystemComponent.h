@@ -9,7 +9,7 @@
 
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatSystemComponent : public UDataAbilitySystemComponent, public ICombatComponentInterface
+class COMBATABILITIESSYSTEM_API UCombatSystemComponent : public UDataAbilitySystemComponent, public ICombatComponentInterface
 {
 	GENERATED_BODY()
 

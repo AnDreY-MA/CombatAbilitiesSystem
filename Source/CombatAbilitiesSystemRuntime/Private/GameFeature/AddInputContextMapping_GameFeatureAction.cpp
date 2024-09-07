@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GameFeature/AddInputContextMapping_GameFeatureAction.h"
-#include "CombatAbilitiesSystemRuntime/Public/CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Engine/AssetManager.h"
 #include "GameFeaturesSubsystemSettings.h"
 #include "Components/GameFrameworkComponentManager.h"

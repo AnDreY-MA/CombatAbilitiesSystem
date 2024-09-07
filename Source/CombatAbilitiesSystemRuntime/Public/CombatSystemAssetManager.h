@@ -25,7 +25,7 @@ private:
 };
 
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatSystemAssetManager : public UAssetManager
+class COMBATABILITIESSYSTEM_API UCombatSystemAssetManager : public UAssetManager
 {
 	GENERATED_BODY()
 

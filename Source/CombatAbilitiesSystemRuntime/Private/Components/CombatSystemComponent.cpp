@@ -3,7 +3,7 @@
 
 #include "Components/CombatSystemComponent.h"
 
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Abilities/CombatAttackAbility.h"
 #include "Data/CombatActionData.h"
 

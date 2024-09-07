@@ -16,8 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGDPlayMontageAndWaitForEventDelega
  * This is a good task to look at as an example when creating game-specific tasks
  * It is expected that each game will have a set of game-specific tasks to do what they want
  */
-UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UPlayMontageAndWaitForEvent : public UAbilityTask
+UCLASS(NotBlueprintable, NotBlueprintType)
+class COMBATABILITIESSYSTEM_API UPlayMontageAndWaitForEvent final : public UAbilityTask
 {
 	GENERATED_BODY()
 	

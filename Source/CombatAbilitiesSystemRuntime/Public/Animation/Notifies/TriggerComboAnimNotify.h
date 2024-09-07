@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UTriggerComboAnimNotify : public UAnimNotify
+class COMBATABILITIESSYSTEM_API UTriggerComboAnimNotify : public UAnimNotify
 {
 	GENERATED_BODY()
 

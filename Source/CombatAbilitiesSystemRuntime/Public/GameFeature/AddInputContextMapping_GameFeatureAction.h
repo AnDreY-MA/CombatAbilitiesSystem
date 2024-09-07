@@ -11,7 +11,7 @@ struct FComponentRequestHandle;
 
 
 UCLASS(DisplayName="Add Input Context Mapping")
-class COMBATABILITIESSYSTEMRUNTIME_API UAddInputContextMapping_GameFeatureAction final : public UGameFeature_WorldActionBase
+class COMBATABILITIESSYSTEM_API UAddInputContextMapping_GameFeatureAction final : public UGameFeature_WorldActionBase
 {
 	GENERATED_BODY()
 

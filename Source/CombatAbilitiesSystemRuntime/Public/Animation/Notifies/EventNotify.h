@@ -9,7 +9,7 @@
 
 
 UCLASS()
-class COMBATABILITIESSYSTEMRUNTIME_API UEventNotify : public UAnimNotify
+class COMBATABILITIESSYSTEM_API UEventNotify : public UAnimNotify
 {
 	GENERATED_BODY()
 

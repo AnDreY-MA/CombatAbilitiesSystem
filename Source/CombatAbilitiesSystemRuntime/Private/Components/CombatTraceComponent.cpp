@@ -4,7 +4,7 @@
 #include "Components/CombatTraceComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "CollisionDebugDrawingPublic.h"
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 
 
 DECLARE_CYCLE_STAT(TEXT("DoTrace"), STAT_DoTraceTest, STATGROUP_CombatTraceComponent);

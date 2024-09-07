@@ -3,7 +3,7 @@
 
 #include "Abilities/Tasks/SpawnProjectile_Task.h"
 
-#include "CombatAbilitiesSystemRuntimeModule.h"
+#include "CombatAbilitiesSystemModule.h"
 #include "Actors/CombatProjectile.h"
 #include "Logging/StructuredLog.h"
 

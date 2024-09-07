@@ -10,7 +10,7 @@ class UObject;
 
 /** Minimal class that supports extension by game feature plugins */
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularPawn : public APawn
+class COMBATABILITIESSYSTEM_API AModularPawn : public APawn
 {
 	GENERATED_BODY()
 

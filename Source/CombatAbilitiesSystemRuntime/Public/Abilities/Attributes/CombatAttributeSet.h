@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, NewValue
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 UCLASS(Blueprintable, BlueprintType)
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatAttributeSet : public UAttributeSet
+class COMBATABILITIESSYSTEM_API UCombatAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
 

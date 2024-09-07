@@ -10,7 +10,7 @@ class UObject;
 
 
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularCharacter : public ACharacter
+class COMBATABILITIESSYSTEM_API AModularCharacter : public ACharacter
 {
 	GENERATED_BODY()
 

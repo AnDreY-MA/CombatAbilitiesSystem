@@ -10,7 +10,7 @@ class UObject;
 
 /** Pair this with a ModularGameStateBase */
 UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularGameModeBase : public AGameModeBase
+class COMBATABILITIESSYSTEM_API AModularGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
@@ -20,7 +20,7 @@ public:
 
 /** Pair this with a ModularGameState */
 UCLASS(Blueprintable)
-class COMBATABILITIESSYSTEMRUNTIME_API AModularGameMode : public AGameMode
+class COMBATABILITIESSYSTEM_API AModularGameMode : public AGameMode
 {
 	GENERATED_BODY()
 

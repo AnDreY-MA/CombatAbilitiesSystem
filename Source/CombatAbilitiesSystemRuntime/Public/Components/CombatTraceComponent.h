@@ -25,7 +25,7 @@ enum class ECombatCollisionStyleType : uint8
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class COMBATABILITIESSYSTEMRUNTIME_API UCombatTraceComponent : public UActorComponent
+class COMBATABILITIESSYSTEM_API UCombatTraceComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

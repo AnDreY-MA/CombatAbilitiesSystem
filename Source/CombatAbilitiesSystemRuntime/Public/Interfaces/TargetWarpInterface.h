@@ -15,7 +15,7 @@ class UTargetWarpInterface : public UInterface
 /**
  * 
  */
-class COMBATABILITIESSYSTEMRUNTIME_API ITargetWarpInterface
+class COMBATABILITIESSYSTEM_API ITargetWarpInterface
 {
 	GENERATED_BODY()
 
