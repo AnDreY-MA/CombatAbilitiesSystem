@@ -1,6 +1,6 @@
 # Combat Abilities System
 
-[Documentation]((https://github.com/AnDreY-MA/CombatAbilitiesSystem/wiki/Combat-Ability-System-‐-Documentation))
+[Documentation](https://github.com/AnDreY-MA/CombatAbilitiesSystem/wiki/Combat-Ability-System-‐-Documentation)
 
 ## About
 It is a plugin for Unreal Engine that extends the Gameplay Ability System, designed specifically to create advanced and customizable combat systems in games.
