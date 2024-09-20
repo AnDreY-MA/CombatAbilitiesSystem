@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "GameFramework/GameState.h"
 
 #include "ModularGameState.generated.h"
@@ -24,7 +25,7 @@ public:
 
 
 /** Pair this with a ModularGameState */
-UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Blueprintable)
 class COMBATABILITIESSYSTEM_API AModularGameState : public AGameState
 {
 	GENERATED_BODY()

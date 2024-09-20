@@ -6,7 +6,6 @@
 #include "AbilitySystemComponent.h"
 #include "DataAbilitySystemComponent.generated.h"
 
-class UCombatAbilityBase;
 
 USTRUCT()
 struct FCombatAttributeData
@@ -21,7 +20,7 @@ struct FCombatAttributeData
 	
 };
 
-UCLASS(meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEM_API UDataAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
@@ -51,7 +50,7 @@ private:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Abilities")
-	TArray<TSubclassOf<UCombatAbilityBase>> DefaultAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
 	UPROPERTY(EditDefaultsOnly, Category="Abilities")
 	TArray<FCombatAttributeData> DefaultAttributes;

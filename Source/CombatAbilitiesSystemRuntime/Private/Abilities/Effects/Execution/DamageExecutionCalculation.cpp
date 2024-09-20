@@ -6,6 +6,8 @@
 #include "CombatAbilitiesSystemModule.h"
 #include "Abilities/Attributes/CombatAttributeSet.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(DamageExecutionCalculation)
+
 void UDamageExecutionCalculation::Execute_Implementation(
 	const FGameplayEffectCustomExecutionParameters& ExecutionParams,
 	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const

@@ -5,6 +5,8 @@
 
 #include "AbilitySystemComponent.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatAnimInstance)
+
 void UCombatAnimInstance::NativeInitializeAnimation()
 {
 	if(const auto* OwnerActor{GetOwningActor()}; OwnerActor)

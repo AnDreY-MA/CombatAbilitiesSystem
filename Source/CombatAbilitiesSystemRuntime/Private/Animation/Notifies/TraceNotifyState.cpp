@@ -5,6 +5,9 @@
 
 #include "Components/CombatTraceComponent.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TraceNotifyState)
+
+
 void UTraceNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
                                     const FAnimNotifyEventReference& EventReference)
 {

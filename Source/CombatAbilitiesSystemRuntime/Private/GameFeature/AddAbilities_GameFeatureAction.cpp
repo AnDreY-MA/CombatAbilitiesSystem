@@ -276,13 +276,13 @@ void UAddAbilities_GameFeatureAction::RemoveActorAbilities(AActor* Actor)
 	{
 		for (UAttributeSet* AttribSetInstance : ActorExtensions->Attributes)
 		{
-			CombatAbilitySystemComponent->GetSpawnedAttributes_Mutable().Remove(AttribSetInstance);
+			CombatAbilitySystemComponent->RemoveSpawnedAttribute(AttribSetInstance);
 		}
 
 		auto* InputComponent {Actor->FindComponentByClass<UAbilityInputBindingComponent>()};
 		for (FGameplayAbilitySpecHandle AbilityHandle : ActorExtensions->Abilities)
 		{
-			if (InputComponent)
+			if (InputComponent) 
 			{
 				InputComponent->ClearInputBinding(AbilityHandle);
 			}

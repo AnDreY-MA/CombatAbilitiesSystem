@@ -8,7 +8,7 @@
 #include "EventNotify.generated.h"
 
 
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UEventNotify : public UAnimNotify
 {
 	GENERATED_BODY()

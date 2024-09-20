@@ -2,6 +2,7 @@
 
 #include "CombatAbilitiesSystemModule.h"
 
+
 DEFINE_LOG_CATEGORY(LogCombatAbilitySystem);
 
 #define LOCTEXT_NAMESPACE "FCombatAbilitiesSystemModule"

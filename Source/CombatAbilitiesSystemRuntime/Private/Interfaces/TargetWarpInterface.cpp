@@ -3,4 +3,4 @@
 
 #include "Interfaces/TargetWarpInterface.h"
 
-// Add default functionality here for any ITargetWarpInterface functions that are not pure virtual.
+#include UE_INLINE_GENERATED_CPP_BY_NAME(TargetWarpInterface)

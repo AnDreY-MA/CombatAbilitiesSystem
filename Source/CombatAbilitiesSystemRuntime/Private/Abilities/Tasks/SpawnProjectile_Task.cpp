@@ -3,9 +3,7 @@
 
 #include "Abilities/Tasks/SpawnProjectile_Task.h"
 
-#include "CombatAbilitiesSystemModule.h"
 #include "Actors/CombatProjectile.h"
-#include "Logging/StructuredLog.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(SpawnProjectile_Task)
 

@@ -5,7 +5,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EventNotify)
+
 
 void UEventNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
                           const FAnimNotifyEventReference& EventReference)
@@ -16,11 +18,5 @@ void UEventNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* A
 	if(!MeshComp->GetOwner()) return;
 
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(MeshComp->GetOwner(), EventTag, FGameplayEventData());
-
-	UE_LOG(LogTemp, Warning, TEXT("Send %s"), *MeshComp->GetOwner()->GetName());
-
-	if(UAbilitySystemComponent* AbilityComponent{UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(MeshComp->GetOwner())}; AbilityComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("YES"))
-	}
+	
 }

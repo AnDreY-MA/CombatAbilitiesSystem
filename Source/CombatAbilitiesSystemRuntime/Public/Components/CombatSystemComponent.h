@@ -8,7 +8,7 @@
 #include "CombatSystemComponent.generated.h"
 
 
-UCLASS(meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEM_API UCombatSystemComponent : public UDataAbilitySystemComponent, public ICombatComponentInterface
 {
 	GENERATED_BODY()
@@ -51,7 +51,7 @@ private:
 	void ActivateComboAbility(const TSubclassOf<UGameplayAbility> InAbilityClass);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category="Abilities|Anims")
+	UPROPERTY(EditDefaultsOnly, Category="Abilities|Anims", meta=(RowType=CombatActionData))
 	TObjectPtr<UDataTable> CombatActionTable;
 	
 	UPROPERTY()

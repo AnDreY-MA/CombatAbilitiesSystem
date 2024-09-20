@@ -6,10 +6,8 @@
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "TriggerComboAnimNotify.generated.h"
 
-/**
- * 
- */
-UCLASS()
+
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UTriggerComboAnimNotify : public UAnimNotify
 {
 	GENERATED_BODY()

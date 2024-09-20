@@ -36,10 +36,8 @@ void UComboWindowAnimNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UA
 
 	if(CombatComponent)
 	{
-		if(!ICombatComponentInterface::Execute_IsActiveNextCombo(CombatComponent) && bEndCombo)
+		if(!ICombatComponentInterface::Execute_IsActiveNextCombo(CombatComponent) || bEndCombo)
 		{
-			UE_LOG(LogAbilitySystemComponent, Display, TEXT("RESET COMBO"));
-
 			ICombatComponentInterface::Execute_ResetCombo(CombatComponent);
 		}
 		ICombatComponentInterface::Execute_CloseComboWindow(CombatComponent);
@@ -52,7 +50,7 @@ void UComboWindowAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, U
 {
 	if(!CombatComponent)
 	{
-		UE_LOG(LogAbilitySystemComponent, Warning, TEXT("CombatComponent is Null"));
+		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("CombatComponent is Null"));
 		return;
 	}
 	
@@ -71,7 +69,7 @@ void UComboWindowAnimNotifyState::NotifyTick(USkeletalMeshComponent* MeshComp, U
 		const UGameplayAbility* ComboAbility {ICombatComponentInterface::Execute_GetCurrentActiveComboAbility(CombatComponent)};
 		if(!ComboAbility)
 		{
-			UE_LOG(LogAbilitySystemComponent, Warning, TEXT("ComboAbility is Null"));
+			UE_LOG(LogCombatAbilitySystem, Warning, TEXT("ComboAbility is Null"));
 			return;
 		}
 

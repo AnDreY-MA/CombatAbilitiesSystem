@@ -6,10 +6,7 @@
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "UpdateWarpNotifyState.generated.h"
 
-/**
- * 
- */
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UUpdateWarpNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()

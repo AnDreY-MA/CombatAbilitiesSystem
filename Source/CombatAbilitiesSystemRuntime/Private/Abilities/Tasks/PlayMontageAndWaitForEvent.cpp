@@ -7,6 +7,8 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemGlobals.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(PlayMontageAndWaitForEvent)
+
 
 UPlayMontageAndWaitForEvent::UPlayMontageAndWaitForEvent(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

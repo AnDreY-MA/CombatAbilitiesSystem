@@ -10,7 +10,7 @@ class UInputMappingContext;
 struct FComponentRequestHandle;
 
 
-UCLASS(DisplayName="Add Input Context Mapping")
+UCLASS(ClassGroup="CombatAbilitiesSystem", DisplayName="Add Input Context Mapping")
 class COMBATABILITIESSYSTEM_API UAddInputContextMapping_GameFeatureAction final : public UGameFeature_WorldActionBase
 {
 	GENERATED_BODY()

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Data/DamageData.h"
 #include "Abilities/Tasks/AbilityTask.h"
 #include "SpawnProjectile_Task.generated.h"
@@ -10,7 +11,7 @@ class ACombatProjectile;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpawnProjectile, ACombatProjectile*, SpawnedProjectile);
 
-UCLASS(NotBlueprintable, NotBlueprintType)
+UCLASS(ClassGroup="CombatAbilitiesSystem", NotBlueprintable, NotBlueprintType)
 class COMBATABILITIESSYSTEM_API USpawnProjectile_Task final : public UAbilityTask
 {
 	GENERATED_BODY()

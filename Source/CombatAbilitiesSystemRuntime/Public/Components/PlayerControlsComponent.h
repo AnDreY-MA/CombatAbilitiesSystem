@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "EnhancedInputComponent.h"
 #include "Components/PawnComponent.h"
 #include "PlayerControlsComponent.generated.h"
@@ -9,10 +10,9 @@
 class UEnhancedInputLocalPlayerSubsystem;
 class UInputAction;
 class UInputMappingContext;
-/**
- * 
- */
-UCLASS(BlueprintType, Blueprintable, meta=(BlueprintSpawnableComponent))
+
+
+UCLASS(ClassGroup="CombatAbilitiesSystem", BlueprintType, Blueprintable, meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEM_API UPlayerControlsComponent : public UPawnComponent
 {
 	GENERATED_BODY()

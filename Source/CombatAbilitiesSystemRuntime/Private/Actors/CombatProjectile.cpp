@@ -10,6 +10,9 @@
 #include "Engine/DamageEvents.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatProjectile)
+
+
 ACombatProjectile::ACombatProjectile(const FObjectInitializer& InInitializer) :
 	Super(InInitializer)
 {
@@ -27,6 +30,7 @@ void ACombatProjectile::BeginPlay()
 	Super::BeginPlay();
 
 	SphereCollision->OnComponentHit.AddDynamic(this, &ACombatProjectile::OnProjectileHit);
+	SphereCollision->IgnoreActorWhenMoving(this, true);
 	SphereCollision->IgnoreActorWhenMoving(GetOwner(), true);
 	
 }
@@ -44,11 +48,9 @@ void ACombatProjectile::OnProjectileHit_Implementation(UPrimitiveComponent* HitC
 		DamageEffectData.TargetAbilityComponent = AbilityComponent;
 		UCombatSystemFunctionLibrary::ApplyDamage(DamageEffectData);
 	}
-
-
+	
 	const FDamageEvent DamageEvent;
 	OtherActor->TakeDamage(1.f, DamageEvent, GetOwner()->GetInstigatorController(), GetOwner());
 	
-	Destroy();
 
 }

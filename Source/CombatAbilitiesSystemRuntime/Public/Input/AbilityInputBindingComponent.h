@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
+
 #include "GameplayAbilitySpec.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "Components/PlayerControlsComponent.h"
@@ -21,7 +23,7 @@ struct FAbilityInputBinding
 	
 };
 
-UCLASS(meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEM_API UAbilityInputBindingComponent : public UPlayerControlsComponent
 {
 	GENERATED_BODY()

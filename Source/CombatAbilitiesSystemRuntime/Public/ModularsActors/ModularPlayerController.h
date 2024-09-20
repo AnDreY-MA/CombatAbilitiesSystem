@@ -3,11 +3,10 @@
 #pragma once
 
 #include "GameFramework/PlayerController.h"
-
 #include "ModularPlayerController.generated.h"
 
 
-UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Blueprintable)
 class COMBATABILITIESSYSTEM_API AModularPlayerController : public APlayerController
 {
 	GENERATED_BODY()

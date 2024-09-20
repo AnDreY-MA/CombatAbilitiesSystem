@@ -7,6 +7,9 @@
 
 #include "GameplayTagsManager.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatSystemAssetManager)
+
+
 FCombatGameplayTags FCombatGameplayTags::CombatTags;
 
 const FCombatGameplayTags& FCombatGameplayTags::Get()

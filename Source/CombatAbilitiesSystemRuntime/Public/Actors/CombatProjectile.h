@@ -11,7 +11,7 @@ class UProjectileMovementComponent;
 class USphereComponent;
 class UGameplayEffect;
 
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API ACombatProjectile : public AActor
 {
 	GENERATED_BODY()

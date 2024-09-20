@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API UDodgeAbility : public UCombatAbilityBase
 {
 	GENERATED_BODY()

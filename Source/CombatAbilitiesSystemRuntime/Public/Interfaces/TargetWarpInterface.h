@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "TargetWarpInterface.generated.h"
 
-UINTERFACE(MinimalAPI)
+UINTERFACE(Category="CombatAbilitiesSystem", MinimalAPI)
 class UTargetWarpInterface : public UInterface
 {
 	GENERATED_BODY()

@@ -3,6 +3,14 @@
 
 #include "Abilities/Attributes/CombatAttributeSet.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "CombatGameplayTags.h"
+#include "GameplayEffectExtension.h"
+
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatAttributeSet)
+
+
 void UCombatAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
@@ -14,8 +22,14 @@ void UCombatAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute
 	
 }
 
-void UCombatAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+void UCombatAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Data.Target.GetAvatarActor(), CombatGameplayTags::DeathAbility,
+			FGameplayEventData());
+	}
 
 }

@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UDamageExecutionCalculation : public UGameplayEffectExecutionCalculation
 {
 	GENERATED_BODY()

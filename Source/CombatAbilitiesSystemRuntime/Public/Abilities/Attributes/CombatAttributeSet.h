@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
+
 #include "CombatAttributeSet.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, NewValue, float, OldValue, float, Magintude);
@@ -15,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, NewValue
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Blueprintable, BlueprintType)
 class COMBATABILITIESSYSTEM_API UCombatAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
@@ -31,7 +32,7 @@ public:
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 private:
 	UPROPERTY(BlueprintReadOnly, Category="Health", meta=(AllowPrivateAccess="true"))

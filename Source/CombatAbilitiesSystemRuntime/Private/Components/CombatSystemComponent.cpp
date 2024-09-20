@@ -63,13 +63,13 @@ TArray<FCombatAnimationInfo> UCombatSystemComponent::GetMontageAction_Implementa
 	}
 	if(!InTagName.IsValid())
 	{
-		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("Parramenter InTagName is no valid"));
+		UE_LOG(LogCombatAbilitySystem, Warning, TEXT("Parrameter InTagName is no valid"));
 		return {};
 	}
 	
 	FCombatActionData ActionData = *CombatActionTable->FindRow<FCombatActionData>(InTagName.GetTagName(), "CombatContext");
 	
-	return ActionData.Animations;	
+	return ActionData.Animations;
 }
 
 FCombatAnimationInfo UCombatSystemComponent::GetComboMontageAction_Implementation(const FGameplayTag& InTagName)

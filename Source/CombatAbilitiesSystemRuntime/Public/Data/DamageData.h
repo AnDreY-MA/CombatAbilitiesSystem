@@ -1,11 +1,12 @@
 ﻿#pragma once
 
+#include "CoreMinimal.h"
 #include "DamageData.generated.h"
 
 class UGameplayEffect;
 class UAbilitySystemComponent;
 
-USTRUCT(BlueprintType)
+USTRUCT(Category="CombatAbilitiesSystem", BlueprintType)
 struct COMBATABILITIESSYSTEM_API FDamageEffectData
 {
 	GENERATED_BODY()

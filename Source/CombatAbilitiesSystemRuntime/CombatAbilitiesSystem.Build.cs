@@ -12,7 +12,7 @@ public class CombatAbilitiesSystem : ModuleRules
 			new string[]
 			{
 				"Core",
-				"MotionWarping", "AIModule", "GameplayAbilities"
+				"MotionWarping", "AIModule", "GameplayAbilities", "Niagara", "NiagaraCore"
 			}
 			);
 			

@@ -2,15 +2,15 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
-
 #include "ModularPlayerState.generated.h"
 
 namespace EEndPlayReason { enum Type : int; }
 
 class UObject;
 
-UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Blueprintable)
 class COMBATABILITIESSYSTEM_API AModularPlayerState : public APlayerState
 {
 	GENERATED_BODY()

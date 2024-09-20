@@ -6,7 +6,7 @@
 #include "Animation/AnimNotifies/AnimNotifyState.h"
 #include "ComboWindowAnimNotifyState.generated.h"
 
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UComboWindowAnimNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()

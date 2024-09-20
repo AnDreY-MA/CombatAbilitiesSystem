@@ -14,17 +14,17 @@ UCombatAbilityBase::UCombatAbilityBase(const FObjectInitializer& InInitializer)
 {
 }
 
-void UCombatAbilityBase::OnMontageCompleted(FGameplayTag EventTag, FGameplayEventData EventData)
+void UCombatAbilityBase::OnMontageCompleted_Implementation(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
-void UCombatAbilityBase::OnMontageCancelled(FGameplayTag EventTag, FGameplayEventData EventData)
+void UCombatAbilityBase::OnMontageCancelled_Implementation(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
-void UCombatAbilityBase::OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData)
+void UCombatAbilityBase::OnEventReceived_Implementation(FGameplayTag EventTag, FGameplayEventData EventData)
 {
 }
 

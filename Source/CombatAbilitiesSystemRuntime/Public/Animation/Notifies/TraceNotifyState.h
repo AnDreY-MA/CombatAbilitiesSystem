@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UTraceNotifyState : public UAnimNotifyState
 {
 	GENERATED_BODY()

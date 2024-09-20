@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup="CombatAbilitiesSystem")
 class COMBATABILITIESSYSTEM_API UGameFeature_WorldActionBase : public UGameFeatureAction
 {
 	GENERATED_BODY()

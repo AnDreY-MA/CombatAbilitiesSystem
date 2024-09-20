@@ -7,7 +7,7 @@
 #include "CombatAbilityBase.generated.h"
 
 
-UCLASS(Abstract)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API UCombatAbilityBase : public UGameplayAbility
 {
 	GENERATED_BODY()
@@ -15,16 +15,16 @@ class COMBATABILITIESSYSTEM_API UCombatAbilityBase : public UGameplayAbility
 public:
 	explicit UCombatAbilityBase(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
-protected:
+	UFUNCTION(BlueprintNativeEvent)
+	void OnMontageCompleted(FGameplayTag EventTag, FGameplayEventData EventData);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnMontageCancelled(FGameplayTag EventTag, FGameplayEventData EventData);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData);
 
-	UFUNCTION()
-	virtual void OnMontageCompleted(FGameplayTag EventTag, FGameplayEventData EventData);
-	
-	UFUNCTION()
-	virtual void OnMontageCancelled(FGameplayTag EventTag, FGameplayEventData EventData);
-	
-	UFUNCTION()
-	virtual void OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData);
+protected:
 		
 	UFUNCTION(BlueprintCallable, Category="CombatAbility")
     void PlayMontageWaitEvents(UAnimMontage* InMontage, const FGameplayTagContainer& InEventTags, const float InRateMontage = 1.f,

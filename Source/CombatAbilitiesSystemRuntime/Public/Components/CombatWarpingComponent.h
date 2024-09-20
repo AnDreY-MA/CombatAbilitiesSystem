@@ -7,10 +7,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "CombatWarpingComponent.generated.h"
 
-/**
- * 
- */
-UCLASS(meta=(BlueprintSpawnableComponent))
+
+UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent))
 class COMBATABILITIESSYSTEM_API UCombatWarpingComponent : public UMotionWarpingComponent
 {
 	GENERATED_BODY()

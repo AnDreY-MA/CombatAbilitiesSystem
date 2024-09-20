@@ -5,9 +5,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
 #include "Interfaces/CombatComponentInterface.h"
 #include "CombatSystemFunctionLibrary.h"
+#include "Engine/DamageEvents.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CombatAttackAbility)
 
@@ -34,20 +34,25 @@ void UCombatAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 
 }
 
-void UCombatAttackAbility::OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData)
+bool UCombatAttackAbility::ApplyDamageToTargetByEvent_Implementation(const FGameplayTag& InEventTag, FGameplayEventData InEventData)
 {
-	AActor* HitActor{EventData.Target};
-	if(HitActors.Contains(HitActor)) return;
-	
-	HitActors.AddUnique(HitActor);
-	
-	CurrentActorInfo->AnimInstance.Get()->Montage_Pause(AttackAnimation.Montage.Get());
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCombatAttackAbility::ResetMontage, PauseHitMontage);
+	AActor* HitActor{ InEventData.Target };
 
-	FDamageEffectData DamageData = MakeDamageData();
-	DamageData.TargetAbilityComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(HitActor);
-	UCombatSystemFunctionLibrary::ApplyDamage(DamageData);
+	if (HitActors.Contains(HitActor)) return false;
+
+	HitActors.AddUnique(HitActor);
+
+	if (Super::ApplyDamageToTargetByEvent_Implementation(InEventTag, InEventData))
+	{
+		CurrentActorInfo->AnimInstance.Get()->Montage_Pause(AttackAnimation.Montage.Get());
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCombatAttackAbility::ResetMontage, PauseHitMontage);
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, HitReactTag, InEventData);
+		const FDamageEvent DamageEvent;
+		HitActor->TakeDamage(1, DamageEvent, CurrentActorInfo->AvatarActor->GetInstigatorController(), CurrentActorInfo->AvatarActor.Get());
+	}
+
+	return false;
 }
 
 void UCombatAttackAbility::ResetMontage() const

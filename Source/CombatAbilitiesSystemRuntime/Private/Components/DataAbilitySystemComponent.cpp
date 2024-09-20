@@ -130,7 +130,7 @@ TArray<UGameplayAbility*> UDataAbilitySystemComponent::GetActiveAbilitiesByClass
 void UDataAbilitySystemComponent::SetupAbilities()
 {
 	DefaultAbilityHandle.Reserve(DefaultAbilities.Num());
-	for(const TSubclassOf<UCombatAbilityBase>& Ability : DefaultAbilities)
+	for(const TSubclassOf<UGameplayAbility>& Ability : DefaultAbilities)
 	{
 		if(*Ability)
 		{

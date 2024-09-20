@@ -2,14 +2,14 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 
 #include "ModularPawn.generated.h"
 
 class UObject;
 
-/** Minimal class that supports extension by game feature plugins */
-UCLASS(ClassGroup=CombatAbilitiesSystem, Blueprintable)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Blueprintable)
 class COMBATABILITIESSYSTEM_API AModularPawn : public APawn
 {
 	GENERATED_BODY()

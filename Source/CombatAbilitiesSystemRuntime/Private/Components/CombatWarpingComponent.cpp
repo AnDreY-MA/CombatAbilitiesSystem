@@ -7,6 +7,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatWarpingComponent)
+
+
 UCombatWarpingComponent::UCombatWarpingComponent(const FObjectInitializer& InInitializer)
 	: Super(InInitializer), LengthWarp(200.f), RadiusSphere(50.f), DebugTraceType(EDrawDebugTrace::None)
 {

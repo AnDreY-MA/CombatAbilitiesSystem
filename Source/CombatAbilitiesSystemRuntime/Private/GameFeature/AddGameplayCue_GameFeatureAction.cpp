@@ -7,7 +7,6 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AddGameplayCue_GameFeatureAction)
 
-
 #define LOCTEXT_NAMESPACE "AddGameplayCue"
 
 UAddGameplayCue_GameFeatureAction::UAddGameplayCue_GameFeatureAction(const FObjectInitializer& InInitializer) :

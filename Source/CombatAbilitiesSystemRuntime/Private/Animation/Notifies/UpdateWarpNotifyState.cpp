@@ -6,6 +6,9 @@
 #include "Components/CombatWarpingComponent.h"
 #include "Interfaces/CombatWarpComponentInterface.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(UpdateWarpNotifyState)
+
+
 void UUpdateWarpNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
                                          float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {

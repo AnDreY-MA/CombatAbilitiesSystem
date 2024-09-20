@@ -24,7 +24,7 @@ enum class ECombatCollisionStyleType : uint8
 	Sweep
 };
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent) )
 class COMBATABILITIESSYSTEM_API UCombatTraceComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -32,7 +32,9 @@ class COMBATABILITIESSYSTEM_API UCombatTraceComponent : public UActorComponent
 public:	
 	explicit UCombatTraceComponent(const FObjectInitializer& InInitializer = FObjectInitializer::Get());
 
+    UFUNCTION(BlueprintCallable, Category="TraceComponent")
 	void ActivateTrace();
+	UFUNCTION(BlueprintCallable, Category="TraceComponent")
 	void DeactivateTrace();
 
 	UFUNCTION(BlueprintCallable, Category="TraceComponent")
@@ -60,10 +62,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep", EditConditionHides))
 	ECombatCollisionShapeType ShapeType{ECombatCollisionShapeType::Capsule};
 
-	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep, ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
 	float CapsuleRadius;
 	
-	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep, ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
 	float CapsuleHalfHeight;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Event")

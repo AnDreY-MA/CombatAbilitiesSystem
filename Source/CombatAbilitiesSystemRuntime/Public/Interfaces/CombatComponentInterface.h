@@ -9,7 +9,7 @@
 
 class UGameplayAbility;
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(Category="CombatAbilitiesSystem", MinimalAPI)
 class UCombatComponentInterface : public UInterface
 {
 	GENERATED_BODY()

@@ -50,7 +50,7 @@ struct FGameFeatureAbilitiesEntry
 	TArray<FCombatAttributesMapping> GrantedAttributes;
 };
 
-UCLASS(DisplayName="Add Combat Abilities")
+UCLASS(ClassGroup="CombatAbilitiesSystem", DisplayName="Add Combat Abilities")
 class COMBATABILITIESSYSTEM_API UAddAbilities_GameFeatureAction final : public UGameFeature_WorldActionBase
 {
 	GENERATED_BODY()

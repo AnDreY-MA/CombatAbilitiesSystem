@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(DisplayName="Add Gameplay Cue Path")
+UCLASS(ClassGroup="CombatAbilitiesSystem", DisplayName="Add Gameplay Cue Path")
 class COMBATABILITIESSYSTEM_API UAddGameplayCue_GameFeatureAction final : public UGameFeatureAction
 {
 	GENERATED_BODY()

@@ -8,6 +8,9 @@
 
 #include "Interfaces/CombatComponentInterface.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(DodgeAbility)
+
+
 void UDodgeAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -15,7 +18,6 @@ void UDodgeAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 
 	if(!CommitAbility(Handle, ActorInfo, ActivationInfo))
 	{
-		UE_LOG(LogAbilitySystemComponent, Warning, TEXT("End from Commit"));
 		EndAbility(Handle, ActorInfo, ActivationInfo, false, true);
 		return;
 	}

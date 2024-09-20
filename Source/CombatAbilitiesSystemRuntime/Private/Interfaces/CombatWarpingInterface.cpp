@@ -3,4 +3,5 @@
 
 #include "Interfaces/CombatWarpingInterface.h"
 
-// Add default functionality here for any ICombatWarpingInterface functions that are not pure virtual.
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CombatWarpingInterface)
+

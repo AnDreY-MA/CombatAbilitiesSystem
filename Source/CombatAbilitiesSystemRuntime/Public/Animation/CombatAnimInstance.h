@@ -2,12 +2,13 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "GameplayEffectTypes.h"
 #include "CombatAnimInstance.generated.h"
 
 
-UCLASS(ClassGroup=CombatAbilitiesSystem, Abstract)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API UCombatAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()

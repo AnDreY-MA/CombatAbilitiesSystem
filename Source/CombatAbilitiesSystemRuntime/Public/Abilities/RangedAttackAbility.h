@@ -8,24 +8,28 @@
 
 class ACombatProjectile;
 
-UCLASS(Abstract)
+UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API URangedAttackAbility : public UDamageAbility
 {
 	GENERATED_BODY()
+
+public:
+	virtual void OnEventReceived_Implementation(FGameplayTag EventTag, FGameplayEventData EventData) override;
+
 
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
-	virtual void OnEventReceived(FGameplayTag EventTag, FGameplayEventData EventData) override;
 
 	UFUNCTION()
 	void HitProjectile(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent)
 	void OnProjectileSpawn(ACombatProjectile* SpawnedProjectile);
-	
-	virtual void Shoot();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void Shoot();
+	
 private:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Combat|Events")
@@ -35,5 +39,7 @@ private:
 	FName NameSocketFromShoot;
 	UPROPERTY(EditDefaultsOnly, Category="Combat|RangedAttack")
 	TSubclassOf<ACombatProjectile> ProjectileClass;
+	UPROPERTY(EditDefaultsOnly, Category="Combat|RangedAttack")
+	FVector ProjectileOffset;
 	
 };

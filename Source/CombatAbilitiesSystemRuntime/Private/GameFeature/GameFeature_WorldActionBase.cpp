@@ -2,8 +2,11 @@
 
 #include "GameFeature/GameFeature_WorldActionBase.h"
 #include "GameFeaturesSubsystemSettings.h"
-#include "Engine/World.h" // for FWorldDelegates::OnStartGameInstance
-#include "Engine/Engine.h" // for FWorldContext
+#include "Engine/World.h"
+#include "Engine/Engine.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(GameFeature_WorldActionBase)
+
 
 void UGameFeature_WorldActionBase::OnGameFeatureActivating()
 {
