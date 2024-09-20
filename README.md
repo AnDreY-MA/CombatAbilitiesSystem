@@ -1,11 +1,16 @@
 # Combat Abilities System
 
-## About
+[Documentation](https://github.com/AnDreY-MA/CombatAbilitiesSystem/wiki/Combat-Ability-System-‐-Documentation)
 
-The Gameplay Abilities System is a plugin that extends another UE plugin Gameplay Abilities System.
+## About
+It is a plugin for Unreal Engine that extends the Gameplay Ability System, designed specifically to create advanced and customizable combat systems in games.
 
 ## Features
 
 - Combat Mechanics
 - Enhanced Input integration
 - Game Features Integrations
+
+## Instalation
+Clone or download this repository to your Plugins/ folder in your Unreal Engine project.
+Enable the plugin in the Plugins window of the Unreal Engine Editor.
