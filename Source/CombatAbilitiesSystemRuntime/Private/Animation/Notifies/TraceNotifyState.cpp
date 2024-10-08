@@ -4,6 +4,7 @@
 #include "Animation/Notifies/TraceNotifyState.h"
 
 #include "Components/CombatTraceComponent.h"
+#include <Interfaces/CombatTraceComponentInterface.h>
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(TraceNotifyState)
 
@@ -13,12 +14,18 @@ void UTraceNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSeque
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 
-	if(!MeshComp || !MeshComp->GetOwner()) return;
+	AActor* Owner{ MeshComp->GetOwner() };
+	if(!MeshComp || !Owner) return;
+	UCombatTraceComponent* TraceComponent{ TryGetTraceComponent(Owner) };
+	
+	if (!TraceComponent) return;
 
-	if(auto* TraceComponent{MeshComp->GetOwner()->GetComponentByClass<UCombatTraceComponent>()}; TraceComponent)
+	if (bChangeSockets)
 	{
-		TraceComponent->ActivateTrace();
+		TraceComponent->SetSocketsName(StartSocketName, EndSocketName);
 	}
+
+	TraceComponent->ActivateTrace();
 	
 }
 
@@ -27,11 +34,21 @@ void UTraceNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenc
 {
 	Super::NotifyEnd(MeshComp, Animation, EventReference);
 
-	if (!MeshComp || !MeshComp->GetOwner()) return;
+	AActor* Owner{ MeshComp->GetOwner() };
+	if (!MeshComp || !Owner) return;
+	UCombatTraceComponent* TraceComponent{ TryGetTraceComponent(Owner) };
+	if (!TraceComponent) return;
 
-	if(auto* TraceComponent{MeshComp->GetOwner()->GetComponentByClass<UCombatTraceComponent>()}; TraceComponent)
-	{
-		TraceComponent->DeactivateTrace();
-	}
+	TraceComponent->DeactivateTrace();
 	
+}
+
+UCombatTraceComponent* UTraceNotifyState::TryGetTraceComponent(const AActor* InOwner)
+{
+	if (InOwner->Implements<UCombatTraceComponentInterface>())
+	{
+		return ICombatTraceComponentInterface::Execute_GetCombatTraceComponent(InOwner);
+	}
+
+	return InOwner->GetComponentByClass<UCombatTraceComponent>();
 }

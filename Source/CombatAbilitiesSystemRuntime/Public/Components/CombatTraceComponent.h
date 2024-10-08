@@ -40,6 +40,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category="TraceComponent")
 	void ChangeTracingComponent(USceneComponent* InSceneComponent);
 
+	UFUNCTION(BlueprintCallable, Category = "TraceComponent")
+	void SetSocketsName(const FName& InStartName, const FName& InEndName)
+	{
+		NameSocketStart = InStartName;
+		NameSocketEnd = InEndName;
+	}
+
 protected:
 	virtual void BeginPlay() override;
 

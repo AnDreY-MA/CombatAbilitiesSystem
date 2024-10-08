@@ -19,4 +19,16 @@ public:
 
 	virtual void NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference) override;
 	
+private:
+	class UCombatTraceComponent* TryGetTraceComponent(const AActor* InOwner);
+
+private:
+	UPROPERTY(EditAnywhere, Category="TraceState")
+	bool bChangeSockets{ false };
+
+	UPROPERTY(EditAnywhere, Category = "TraceState", meta = (EditCondition = "bChangeSockets"))
+	FName StartSocketName;
+
+	UPROPERTY(EditAnywhere, Category = "TraceState", meta = (EditCondition = "bChangeSockets"))
+	FName EndSocketName;
 };

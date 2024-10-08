@@ -43,7 +43,7 @@ void UUpdateWarpNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSe
 	}
 	else if(auto* WarpComponent {AvatarOwner->FindComponentByClass<UCombatWarpingComponent>()}; WarpComponent)
 	{
-		WarpComponent->UpdateWarpTarget();
+		WarpComponent->ResetWarpTarget();
 	}
 	
 }
