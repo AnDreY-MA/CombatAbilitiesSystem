@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
+#include "CollisionQueryParams.h"
 #include "CombatTraceComponent.generated.h"
 
 DECLARE_STATS_GROUP(TEXT("CombatTraceComponent"), STATGROUP_CombatTraceComponent, STATCAT_Advanced);
@@ -22,6 +23,35 @@ enum class ECombatCollisionStyleType : uint8
 {
 	Line = 0,
 	Sweep
+};
+
+UENUM(BlueprintType)
+enum class ECombatTraceType : uint8
+{
+	SINGLE = 0,
+	MULTI
+};
+
+USTRUCT(BlueprintType)
+struct COMBATABILITIESSYSTEM_API FTraceShapeData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	ECombatCollisionShapeType ShapeType{ ECombatCollisionShapeType::Capsule };
+
+	UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	float CapsuleRadius;
+
+	UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
+	float CapsuleHalfHeight;
+
+	UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "ShapeType==ECombatCollisionShapeType::Box", EditConditionHides))
+	FVector BoxExtent;
+
+	UPROPERTY(EditDefaultsOnly, meta = (EditCondition = "ShapeType==ECombatCollisionShapeType::Sphere", EditConditionHides))
+	float SphereRadius;
+
 };
 
 UCLASS(ClassGroup="CombatAbilitiesSystem", meta=(BlueprintSpawnableComponent) )
@@ -51,33 +81,53 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	void RunAsyncTaskStartTrace();
+	void DoTrace() const;
+	void DoTraceShape(const FVector& Start, const FVector& End, const FQuat& Rot, FCollisionQueryParams& CollisionQueryParams) const;
+	void OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum);
+
+
+#if !UE_BUILD_SHIPPING || WITH_EDITOR
+	void TryDrawDebug(const FVector& InStart, const FVector& InEnd, const FQuat& InRot) const;
+#endif
+
+	FORCEINLINE FCollisionShape GetShape() const
+	{
+		TMap<ECombatCollisionShapeType, FCollisionShape> MapShape{
+		{ECombatCollisionShapeType::Capsule, FCollisionShape::MakeCapsule(ShapeData.CapsuleRadius, ShapeData.CapsuleHalfHeight)},
+		{ECombatCollisionShapeType::Box, FCollisionShape::MakeBox(ShapeData.BoxExtent)},
+		{ECombatCollisionShapeType::Sphere, FCollisionShape::MakeSphere(ShapeData.SphereRadius)}
+		};
+
+		return *MapShape.Find(ShapeData.ShapeType);
+	}
+
+private:
 	UPROPERTY(EditAnywhere, Category="Trace")
 	FName NameSocketStart{FName()};
 
 	UPROPERTY(EditAnywhere, Category="Trace")
 	FName NameSocketEnd{FName()};
 
+	UPROPERTY(EditDefaultsOnly, Category = "Trace")
+	ECombatTraceType TraceType;
+
 	UPROPERTY(EditDefaultsOnly, Category="Trace")
 	TEnumAsByte<ECollisionChannel> TraceChannel{ECC_Visibility};
 
 	UPROPERTY(EditDefaultsOnly, Category="Trace")
 	float TraceInterval{0.5f};
-
+		
 	UPROPERTY(EditDefaultsOnly, Category="Trace")
 	ECombatCollisionStyleType TraceStyleType{ECombatCollisionStyleType::Line};
 
-	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep", EditConditionHides))
-	ECombatCollisionShapeType ShapeType{ECombatCollisionShapeType::Capsule};
-
-	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep, ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
-	float CapsuleRadius;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Trace|Sweep", meta=(EditCondition="TraceStyleType==ECombatCollisionStyleType::Sweep, ShapeType==ECombatCollisionShapeType::Capsule", EditConditionHides))
-	float CapsuleHalfHeight;
+	UPROPERTY(EditDefaultsOnly, Category = "Trace|Shape", meta = (EditCondition = "TraceStyleType==ECombatCollisionStyleType::Sweep", EditConditionHides))
+	FTraceShapeData ShapeData;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Event")
 	FGameplayTag EventHitTag{FGameplayTag()};
 
+#if WITH_EDITORONLY_DATA
 #pragma region Debug
 
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(DevelopmentOnly))
@@ -92,7 +142,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(EditCondition="bShouldDebug", EditConditionHides, DevelopmentOnly))
 	FColor ColorDebug{FColor::Red};
 #pragma endregion 
-	
+#endif	
+
 	UPROPERTY()
 	TWeakObjectPtr<USceneComponent> TracingComponent;
 
@@ -100,13 +151,5 @@ private:
 	FTimerHandle TraceTimerHandle;
 
 	FTraceDelegate TraceDelegate;
-
-	void RunAsyncTaskStartTrace();
-	void DoTrace() const;
-	void OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum);
-
-#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
-	void TryDrawDebug(const FVector& InStart, const FVector& InEnd, const FQuat& InRot) const;
-#endif
 	
 };

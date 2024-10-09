@@ -11,8 +11,8 @@ public class CombatAbilitiesSystem : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
-				"MotionWarping", "AIModule", "GameplayAbilities", "Niagara", "NiagaraCore"
+				"Core", "Engine",
+				"MotionWarping", "AIModule", "GameplayAbilities", "Niagara", "NiagaraCore", "UMG"
 			}
 			);
 			
