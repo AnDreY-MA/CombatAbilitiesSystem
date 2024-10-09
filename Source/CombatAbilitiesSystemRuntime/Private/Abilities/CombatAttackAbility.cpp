@@ -48,9 +48,10 @@ bool UCombatAttackAbility::ApplyDamageToTargetByEvent_Implementation(const FGame
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UCombatAttackAbility::ResetMontage, PauseHitMontage);
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, HitReactTag, InEventData);
-		const FDamageEvent DamageEvent;
-		HitActor->TakeDamage(1, DamageEvent, CurrentActorInfo->AvatarActor->GetInstigatorController(), CurrentActorInfo->AvatarActor.Get());
 	}
+	const FDamageEvent DamageEvent;
+	HitActor->TakeDamage(1, DamageEvent, CurrentActorInfo->AvatarActor->GetInstigatorController(), CurrentActorInfo->AvatarActor.Get());
+	UE_LOG(LogTemp, Warning, TEXT("Hit Actor = %s"), *HitActor->GetName());
 
 	return false;
 }

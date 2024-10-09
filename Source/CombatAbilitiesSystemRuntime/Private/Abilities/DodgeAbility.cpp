@@ -22,7 +22,13 @@ void UDodgeAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		return;
 	}
 
-	if(const auto* AbilityComponent{ActorInfo->AvatarActor.Get()->FindComponentByInterface<UCombatComponentInterface>()}; AbilityComponent)
+	ApplyDodge();
+
+}
+
+void UDodgeAbility::ApplyDodge_Implementation()
+{
+	if(const auto* AbilityComponent{CurrentActorInfo->AvatarActor.Get()->FindComponentByInterface<UCombatComponentInterface>()}; AbilityComponent)
 	{
 		const auto [Montage, Speed] {ICombatComponentInterface::Execute_GetMontageAction(AbilityComponent, AbilityTags.First())[0]};
 
@@ -32,5 +38,4 @@ void UDodgeAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 		}
 		PlayMontageWaitEventsDefault(Montage.Get(), Speed);
 	}
-
 }

@@ -137,7 +137,7 @@ private:
 	bool bShouldDebug{false};
 	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(EditCondition="bShouldDebug", EditConditionHides, DevelopmentOnly))
-	float LifeTimeDebugLine{0.5};
+	float LifeTimeDebug{0.5};
 	
 	UPROPERTY(EditDefaultsOnly, Category="Trace|Debug", meta=(EditCondition="bShouldDebug", EditConditionHides, DevelopmentOnly))
 	FColor ColorDebug{FColor::Red};

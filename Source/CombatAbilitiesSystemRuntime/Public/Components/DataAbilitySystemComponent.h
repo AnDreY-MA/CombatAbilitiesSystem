@@ -15,7 +15,7 @@ struct FCombatAttributeData
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAttributeSet> AttributeSetType{nullptr};
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, meta = (RequiredAssetDataTags = "RowStructure=/Script/GameplayAbilities.AttributeMetaData"))
 	TObjectPtr<UDataTable> DataTable{nullptr};
 	
 };

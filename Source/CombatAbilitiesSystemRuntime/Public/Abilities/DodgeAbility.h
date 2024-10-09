@@ -6,9 +6,7 @@
 #include "Abilities/CombatAbilityBase.h"
 #include "DodgeAbility.generated.h"
 
-/**
- * 
- */
+
 UCLASS(ClassGroup="CombatAbilitiesSystem", Abstract)
 class COMBATABILITIESSYSTEM_API UDodgeAbility : public UCombatAbilityBase
 {
@@ -18,4 +16,7 @@ protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void ApplyDodge();
+
 };

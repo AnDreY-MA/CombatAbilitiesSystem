@@ -5,13 +5,19 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "CollisionDebugDrawingPublic.h"
 #include "CombatAbilitiesSystemModule.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 DECLARE_CYCLE_STAT(TEXT("DoTrace"), STAT_DoTraceTest, STATGROUP_CombatTraceComponent);
 DECLARE_CYCLE_STAT(TEXT("RunStartTrace"), STAT_RunStartTrace, STATGROUP_CombatTraceComponent);
 
+namespace
+{
+	
+}
+
 UCombatTraceComponent::UCombatTraceComponent(const FObjectInitializer& InInitializer)
-	: Super(InInitializer), CapsuleRadius(20), CapsuleHalfHeight(40)
+	: Super(InInitializer), TraceType(ECombatTraceType::SINGLE)
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
@@ -21,7 +27,6 @@ void UCombatTraceComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	TraceDelegate.BindUObject(this, &UCombatTraceComponent::OnTraceDelegate);
-
 }
 
 void UCombatTraceComponent::RunAsyncTaskStartTrace()
@@ -34,6 +39,8 @@ void UCombatTraceComponent::RunAsyncTaskStartTrace()
 
 void UCombatTraceComponent::ActivateTrace()
 {
+	check(TracingComponent != nullptr);
+
 	RunAsyncTaskStartTrace();
 	
 }
@@ -65,22 +72,30 @@ void UCombatTraceComponent::DoTrace() const
 	FCollisionQueryParams CollisionQueryParams;
 	CollisionQueryParams.AddIgnoredActor(GetOwner());
 
-#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
+#if !UE_BUILD_SHIPPING || WITH_EDITOR
 	TryDrawDebug(Start, End, Rot);
 #endif
+
 	
 	if(TraceStyleType == ECombatCollisionStyleType::Line)
 	{
-		World->AsyncLineTraceByChannel(EAsyncTraceType::Single, Start, End, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
+		EAsyncTraceType Type = TraceType == ECombatTraceType::SINGLE ? EAsyncTraceType::Single : EAsyncTraceType::Multi;
+		World->AsyncLineTraceByChannel(Type, Start, End, TraceChannel, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
 	}
 	else if(TraceStyleType == ECombatCollisionStyleType::Sweep)
 	{
-		if(ShapeType == ECombatCollisionShapeType::Capsule)
-		{
-			GetWorld()->AsyncSweepByChannel(EAsyncTraceType::Single, Start, End, Rot, TraceChannel, FCollisionShape::MakeCapsule(20, 40), CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
-		}
+		DoTraceShape(Start, End, Rot, CollisionQueryParams);
 	}
 	
+}
+
+void UCombatTraceComponent::DoTraceShape(const FVector& Start, const FVector& End, const FQuat& Rot, FCollisionQueryParams& CollisionQueryParams) const
+{
+	FCollisionShape Shape = GetShape();
+	
+	EAsyncTraceType Type = TraceType == ECombatTraceType::SINGLE ? EAsyncTraceType::Single : EAsyncTraceType::Multi;
+	GetWorld()->AsyncSweepByChannel(Type, Start, End, Rot, TraceChannel, Shape, CollisionQueryParams, FCollisionResponseParams::DefaultResponseParam, &TraceDelegate);
+
 }
 
 void UCombatTraceComponent::OnTraceDelegate(const FTraceHandle& InTraceHandle, FTraceDatum& InTraceDatum)
@@ -101,24 +116,30 @@ void UCombatTraceComponent::OnTraceDelegate(const FTraceHandle& InTraceHandle, F
 	
 }
 
-#if !UE_BUILD_SHIPPING || WITH_EDITORONLY_DATA
+#if !UE_BUILD_SHIPPING || WITH_EDITOR
 void UCombatTraceComponent::TryDrawDebug(const FVector& InStart, const FVector& InEnd, const FQuat& InRot) const
 {
 	if (!bShouldDebug) return;
 
 	if(TraceStyleType == ECombatCollisionStyleType::Line)
 	{
-		DrawDebugLine(GetWorld(), InStart, InEnd, ColorDebug, false, LifeTimeDebugLine);
+		DrawDebugLine(GetWorld(), InStart, InEnd, ColorDebug, false, LifeTimeDebug);
 	}
 	else if(TraceStyleType == ECombatCollisionStyleType::Sweep)
 	{
-		if(ShapeType == ECombatCollisionShapeType::Capsule)
+		FCollisionShape Shape = GetShape();
+
+		if(ShapeData.ShapeType == ECombatCollisionShapeType::Capsule)
 		{
-			DrawCapsuleSweeps(GetWorld(), InStart, InEnd, 20, 40, InRot, {}, LifeTimeDebugLine);
+			DrawCapsuleSweeps(GetWorld(), InStart, InEnd, Shape.GetCapsuleHalfHeight(), Shape.GetCapsuleRadius(), InRot, {}, LifeTimeDebug);
 		}
-		else if(ShapeType == ECombatCollisionShapeType::Sphere)
+		else if(ShapeData.ShapeType == ECombatCollisionShapeType::Sphere)
 		{
-			DrawSphereSweeps(GetWorld(), InStart, InEnd, 30, {}, LifeTimeDebugLine);
+			DrawSphereSweeps(GetWorld(), InStart, InEnd, Shape.GetSphereRadius(), {}, LifeTimeDebug);
+		}
+		else if (ShapeData.ShapeType == ECombatCollisionShapeType::Box)
+		{
+			DrawBoxSweeps(GetWorld(), InStart, InEnd, Shape.GetExtent(), InRot, {}, LifeTimeDebug);
 		}
 	}
 }

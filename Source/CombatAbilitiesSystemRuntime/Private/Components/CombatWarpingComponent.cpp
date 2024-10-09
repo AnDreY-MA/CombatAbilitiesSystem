@@ -11,8 +11,9 @@
 
 
 UCombatWarpingComponent::UCombatWarpingComponent(const FObjectInitializer& InInitializer)
-	: Super(InInitializer), LengthWarp(200.f), RadiusSphere(50.f), DebugTraceType(EDrawDebugTrace::None)
+	: Super(InInitializer), BoneName(FName("root")), LengthWarp(200.f), RadiusSphere(50.f), DebugTraceType(EDrawDebugTrace::None)
 {
+
 }
 
 void UCombatWarpingComponent::UpdateWarpTarget()
@@ -38,19 +39,21 @@ void UCombatWarpingComponent::ResetWarpTarget()
 
 void UCombatWarpingComponent::TryWarpToTarget(AActor* InTarget)
 {
+	const FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), InTarget->GetActorLocation() - InTarget->GetActorForwardVector());
+
+	FMotionWarpingTarget WarpingTarget{ FMotionWarpingTarget() };
+	WarpingTarget.Name = WarpTargetName;
+	WarpingTarget.Rotation = FRotator(0.0, 0.0, TargetRotation.Roll);
+	WarpingTarget.BoneName = BoneName;
+
 	if(InTarget->Implements<UTargetWarpInterface>())
 	{
 		USceneComponent* SnapComponent {nullptr};
 		ITargetWarpInterface::Execute_GetDirection(InTarget, GetOwner()->GetActorLocation(), SnapComponent);
 
-		const FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), InTarget->GetActorLocation() - InTarget->GetActorForwardVector());
-
-		FMotionWarpingTarget WarpingTarget{FMotionWarpingTarget()};
-		WarpingTarget.Name = WarpTargetName;
 		WarpingTarget.Location = SnapComponent->GetComponentLocation();
-		WarpingTarget.Rotation = FRotator(0.0, 0.0, TargetRotation.Roll);
-		WarpingTarget.BoneName = FName("root");
-			
-		AddOrUpdateWarpTarget(WarpingTarget);
 	}
+	
+	AddOrUpdateWarpTarget(WarpingTarget);
+
 }

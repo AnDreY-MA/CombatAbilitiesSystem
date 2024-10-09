@@ -30,7 +30,7 @@ struct FCombatAttributesMapping
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSoftClassPtr<UAttributeSet> Attribute;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(RequiredAssetDataTags = "RowStructure=/Script/GameplayAbilities.AttributeMetaData"))
 	TSoftObjectPtr<UDataTable> AttributeData;
 	
 };

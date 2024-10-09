@@ -25,6 +25,9 @@ private:
 private:
 	UPROPERTY(EditDefaultsOnly, Category="Combat Warp")
 	FName WarpTargetName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat Warp")
+	FName BoneName;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Combat Warp")
 	float LengthWarp;
